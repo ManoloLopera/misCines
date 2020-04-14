@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "miscine-dd971": {
+      "hosting": {
+        "misCines": [
+          "miscine-dd971"
+        ]
+      }
+    }
+  }
+}

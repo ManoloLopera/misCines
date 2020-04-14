@@ -4,13 +4,10 @@ import { DatePipe } from '@angular/common';
 import { Cine } from './cine';
 
 export class Sesion {
-
-  constructor(
-    hora_inicio: DatePipe,
-    hora_fin: DatePipe,
-    idcine: Cine,
-    idpelicula: Pelicula,
-    idsala: Sala,
-    id?: string
-  ) {}
+    hora_inicio: DatePipe;
+    hora_fin: DatePipe;
+    idcine: Cine;
+    idpelicula: Pelicula;
+    idsala: Sala;
+    id?: string;
 }

@@ -1,12 +1,9 @@
 import { Time } from '@angular/common';
 export class Cine {
-
-  constructor(
-    hora_inicio: Time,
-    hora_fin: Time,
-    nombre: string,
-    num_sala: number,
-    precion: number,
-    id?: string
-  ) {}
+  id?: string;
+  precio: number;
+  num_sala: number;
+  nombre: string;
+  hora_fin: Time;
+  hora_inicio: Time;
 }

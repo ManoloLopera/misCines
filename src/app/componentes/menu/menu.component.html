@@ -1,0 +1,12 @@
+<button mat-button (click)="navigate('mantenimiento')" [matMenuTriggerFor]="entidades"> Mantenimiento </button>
+<button mat-button (click)="navigate('genero')"> Genero </button>
+
+<mat-menu #entidades="matMenu">
+  <button mat-menu-item (click)="navigate('pelicula')" >Peliculas</button>
+  <button mat-menu-item (click)="navigate('cines')" >Cines</button>
+  <button mat-menu-item (click)="navigate('idiomas')" >Idiomas</button>
+  <button mat-menu-item (click)="navigate('genero')">Géneros</button>
+  <button mat-menu-item (click)="navigate('sesion')" >Sesion</button>
+  <button mat-menu-item (click)="navigate('usuario')" >Usuarios</button>
+</mat-menu>
+
