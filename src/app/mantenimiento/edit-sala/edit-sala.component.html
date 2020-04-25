@@ -1,0 +1,24 @@
+<div id="container">
+  <h1 class="is-size-1">Editar Sala</h1>
+
+  <form [formGroup]="salaForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="fill">
+      <mat-label>Aforo</mat-label>
+      <input matInput type="number" formControlName="aforo">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Sala nº</mat-label>
+      <input matInput type="number" formControlName="num_sala">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Cine</mat-label>
+      <mat-select formControlName="cine">
+        <mat-option *ngFor="let cine of cineApp" [value]="cine.id">
+          {{cine.nombre}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button mat-raised-button color="basic" [disabled]="!salaForm.valid">Editar</button>
+  </form>
+  <br>
+</div>

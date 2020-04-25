@@ -12,15 +12,4 @@ export class MenuComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  navigate(tag) {
-    switch (tag) {
-      case 'mantenimiento':
-        this.router.navigate(['/mantenimiento']);
-        break;
-      case 'genero':
-        this.router.navigate(['/genero']);
-        break;
-    }
-  }
-
 }

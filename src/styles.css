@@ -2,3 +2,31 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+#main{
+  min-height: 35em;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+mat-label {
+  text-align: center;
+}
+
+#container{
+  width: 90%;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+#containter > h1{
+  text-align: center;
+}
+
+table {
+  width: 100%;
+  margin-left:auto;
+  margin-right:auto;
+}

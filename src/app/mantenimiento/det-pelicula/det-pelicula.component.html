@@ -1,0 +1,19 @@
+<mat-card class="example-card" id="container">
+  <mat-card-header>
+    <!-- <div mat-card-avatar class="example-header-image"></div> -->
+    <mat-card-title>{{peliculaDet.nombre}}</mat-card-title>
+    <mat-card-subtitle>{{peliculaDet.director}}</mat-card-subtitle>
+  </mat-card-header>
+  <img mat-card-image src="{{peliculaDet.imagen}}" alt="Photo of a Shiba Inu">
+  <mat-card-content>
+    <p>
+      <strong>Duración :</strong> {{peliculaDet.duracion}} <br>
+      <strong>Género : </strong> {{dameElNombreGenero(peliculaDet.genero)}} <br>
+      <strong>Idioma : </strong> {{dameElNombreIdioma(peliculaDet.idioma)}} <br>
+      <strong>Estreno : </strong> {{peliculaDet.estreno | date:'mediumDate'}} <br>
+    </p>
+    <p>
+      <strong>Sinopsis :</strong> {{peliculaDet.sinopsis}}
+    </p>
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,25 @@
+<div id="container">
+    <h1 class="is-size-1">Editar Idioma</h1>
+    <!-- <a class="download" *ngIf="finalizado">URL de descarga: <a href="{{ URLPublica }}" target="_blank">Descargar</a></p> -->
+    <form [formGroup]="idiomaForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="fill">
+        <mat-label>Nombre</mat-label>
+        <input matInput #input maxlength="10" formControlName="nombre">
+        <mat-hint align="end">{{input.value?.length || 0}}/10 </mat-hint>
+      </mat-form-field>
+      <div class="file has-name is-boxed">
+        <label class="file-label">
+          <input class="file-input" type="file" formControlName="imagen" (change)="cambioArchivo($event)">
+          <span class="file-cta">
+          </span>
+          <span class="file-name">
+            {{ mensajeArchivo }}
+          </span>
+        </label>
+      </div>
+      <img *ngIf="finalizado" [src]="URLPublica">
+      <hr>
+      <progress *ngIf="porcentaje > 0 && porcentaje < 100" class="progress is-large is-success" value="{{porcentaje}}" max="100">{{porcentaje}}%</progress>
+      <button mat-raised-button color="basic" [ngClass]="{'button': true, 'is-success': true, 'is-large': true, 'is-loading': porcentaje > 0 && porcentaje < 100}" [disabled]="!idiomaForm.valid && (porcentaje > 0 && porcentaje < 100)">Editar</button>
+    </form>
+</div>

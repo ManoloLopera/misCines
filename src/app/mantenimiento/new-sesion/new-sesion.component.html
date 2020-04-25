@@ -1,0 +1,36 @@
+<div id="container">
+  <h1 class="is-size-1">Añadir Sesión</h1>
+
+  <form [formGroup]="sesionForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="fill">
+      <mat-label>Pelicula</mat-label>
+      <mat-select formControlName="pelicula">
+        <mat-option *ngFor="let pelicula of peliculasApp" [value]="pelicula.id">
+          {{pelicula.nombre}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Sala</mat-label>
+      <mat-select formControlName="sala">
+        <mat-option *ngFor="let sala of salasApp" [value]="sala.id">
+          {{sala.cine + ' => ' + sala.num_sala}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Fecha</mat-label>
+      <input matInput type="date" formControlName="fecha_sesion">
+    </mat-form-field>
+    <mat-form-field appearance="fill" >
+      <mat-label>Hora Inicio</mat-label>
+      <input matInput type="time" formControlName="hora_inicio" step="1">
+    </mat-form-field>
+    <mat-form-field appearance="fill" >
+      <mat-label>Hora Fin</mat-label>
+      <input matInput type="time" formControlName="hora_fin" step="1">
+    </mat-form-field>
+    <button mat-raised-button color="basic">Crear</button>
+  </form>
+  <br>
+</div>

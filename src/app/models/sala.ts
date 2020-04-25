@@ -1,6 +1,6 @@
-import { Cine } from './cine';
 export class Sala {
-  idcine: Cine;
+  cine: string;
+  num_sala: number;
   aforo: number;
   id?: string;
 }

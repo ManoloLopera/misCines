@@ -1,0 +1,39 @@
+<div id="container">
+  <h1>Editar Cine</h1>
+  <form [formGroup]="cineForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="fill">
+      <mat-label>Nombre</mat-label>
+      <input matInput type="text" formControlName="nombre">
+      <mat-error *ngIf="hasError('nombre','required')" >Nombre es obligatorio</mat-error>
+      <mat-error *ngIf="hasError('nombre','maxlength')" >El nombre es más largo de lo permitido</mat-error>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill" >
+      <mat-label>Número de salas</mat-label>
+      <input matInput type="number" formControlName="num_sala">
+      <mat-error *ngIf="hasError('num_sala','required')" >El número de salas es obligatorio</mat-error>
+      <!-- <mat-error *ngIf="hasError('num_sala','pattern')" >¿Tienes enserio más de 100 salas?</mat-error> -->
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill" >
+      <mat-label>Precio de las entradas</mat-label>
+      <input matInput type="number" formControlName="precio">
+      <mat-error *ngIf="hasError('precio','required')" >El precio es obligatorio</mat-error>
+      <mat-error *ngIf="hasError('precio','pattern')" >El precio no tiene formato correcto</mat-error>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill" >
+      <mat-label>Hora de Inicio</mat-label>
+      <input matInput type="time" formControlName="hora_inicio" step="1">
+      <mat-error *ngIf="hasError('hora_inicio','required')" >La hora de inicio es obligatoria</mat-error>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill" >
+      <mat-label>Hora de Fin</mat-label>
+      <input matInput type="time" formControlName="hora_fin" step="1">
+      <mat-error *ngIf="hasError('hora_fin','required')" >La hora de fin es obligatoria</mat-error>
+    </mat-form-field>
+    <br>
+    <button mat-raised-button color="basic" [disabled]="!cineForm.valid">Editar</button>
+  </form>
+</div>

@@ -1,0 +1,59 @@
+<div id="container">
+  <h1 class="is-size-1">Añadir Pelicula</h1>
+
+  <form [formGroup]="peliculaForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="fill">
+      <mat-label>Nombre</mat-label>
+      <input matInput formControlName="nombre">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Genero</mat-label>
+      <mat-select formControlName="genero">
+        <mat-option *ngFor="let genero of generoApp" [value]="genero.id">
+          {{genero.nombre}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Idioma</mat-label>
+      <mat-select formControlName="idioma">
+        <mat-option *ngFor="let idioma of idiomaApp" [value]="idioma.id">
+          {{idioma.nombre}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Director</mat-label>
+      <input matInput formControlName="director">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Estreno</mat-label>
+      <input matInput type="date" formControlName="estreno">
+    </mat-form-field>
+    <mat-form-field appearance="fill" >
+      <mat-label>Duracion</mat-label>
+      <input matInput type="time" formControlName="duracion" step="1">
+      <!-- <mat-error *ngIf="hasError('hora_inicio','required')" >La hora de inicio es obligatoria</mat-error> -->
+    </mat-form-field>
+    <div class="file has-name is-boxed">
+      <label class="file-label">
+        <input class="file-input" type="file" formControlName="imagen" (change)="cambioArchivo($event)">
+        <span class="file-cta">
+        </span>
+        <span class="file-name">
+          {{ mensajeArchivo }}
+        </span>
+      </label>
+    </div>
+    <img *ngIf="finalizado" [src]="URLPublica">
+    <hr>
+    <mat-form-field appearance="fill" >
+      <mat-label>Sinopsis</mat-label>
+      <textarea matInput type="text" formControlName="sinopsis"></textarea>
+      <!-- <mat-error *ngIf="hasError('descripcion','required')" >Descripción es obligatorio</mat-error> -->
+    </mat-form-field>
+    <progress *ngIf="porcentaje > 0 && porcentaje < 100" class="progress is-large is-success" value="{{porcentaje}}" max="100">{{porcentaje}}%</progress>
+    <button mat-raised-button color="basic" [ngClass]="{'button': true, 'is-success': true, 'is-large': true, 'is-loading': porcentaje > 0 && porcentaje < 100}" [disabled]="!peliculaForm.valid && (porcentaje > 0 && porcentaje < 100)">Crear</button>
+  </form>
+  <br>
+</div>

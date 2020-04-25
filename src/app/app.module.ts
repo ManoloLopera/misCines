@@ -1,3 +1,4 @@
+import { MantenimientoModule } from './mantenimiento/mantenimiento.module';
 import { ComponentesModule } from './componentes/componentes.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -7,6 +8,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeComponent } from './home/home.component';
 
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { environment } from './../environments/environment';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
@@ -24,6 +26,8 @@ import 'firebase/firestore';
     AppRoutingModule,
     BrowserAnimationsModule,
     ComponentesModule,
+    MantenimientoModule,
+    FlexLayoutModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule,
     AngularFireAuthModule

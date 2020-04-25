@@ -1,0 +1,30 @@
+<div id="container">
+  <h1 style="text-align: center;">Mantenimiento de Idiomas</h1>
+  <table mat-table [dataSource]="datos" class="mat-elevation-z8">
+
+    <ng-container matColumnDef="Nombre">
+      <th mat-header-cell *matHeaderCellDef> Nombre </th>
+      <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Imagen">
+      <th mat-header-cell *matHeaderCellDef> Imagen </th>
+      <td mat-cell *matCellDef="let element"> <img [src]="element.imagen"> </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Accion">
+      <th mat-header-cell *matHeaderCellDef> Accion </th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-raised-button color="primary" [routerLink]="['/idioma/',element.id]">
+          <fa-icon [icon]="editar"></fa-icon>
+        </button>&nbsp;
+        <button mat-raised-button color="warn" (click)="eliminar(element)">
+          <fa-icon [icon]="borrar"></fa-icon>
+        </button>
+      </td>
+    </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+  <tr mat-row *matRowDef="let row; columns: columnas;"></tr>
+  </table>
+</div>

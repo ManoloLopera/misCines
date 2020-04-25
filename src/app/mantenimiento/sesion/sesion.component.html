@@ -1,0 +1,40 @@
+<div id="container">
+  <h1 style="text-align: center;">Mantenimiento de Sesiones</h1>
+  <table mat-table [dataSource]="datos" class="mat-elevation-z8">
+
+    <ng-container matColumnDef="Pelicula">
+      <th mat-header-cell *matHeaderCellDef> Pelicula </th>
+      <td mat-cell *matCellDef="let element"> {{element.pelicula}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Sala">
+      <th mat-header-cell *matHeaderCellDef> Sala </th>
+      <td mat-cell *matCellDef="let element"> {{element.sala}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Hora_Inicio">
+      <th mat-header-cell *matHeaderCellDef> Hora Inicio </th>
+      <td mat-cell *matCellDef="let element"> {{element.hora_inicio}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="Hora_Fin">
+      <th mat-header-cell *matHeaderCellDef> Hora Fin </th>
+      <td mat-cell *matCellDef="let element"> {{element.hora_fin}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Accion">
+      <th mat-header-cell *matHeaderCellDef> Accion </th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-raised-button color="primary" [routerLink]="['/sesion/',element.id]">
+          <fa-icon [icon]="editar"></fa-icon>
+        </button>&nbsp;
+        <button mat-raised-button color="warn" (click)="eliminar(element)">
+          <fa-icon [icon]="borrar"></fa-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+    <tr mat-row *matRowDef="let row; columns: columnas;"></tr>
+  </table>
+</div>

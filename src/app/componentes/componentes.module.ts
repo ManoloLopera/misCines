@@ -5,7 +5,7 @@ import { MenuComponent } from './menu/menu.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
 import { FooterComponent } from './footer/footer.component';
-
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 
 @NgModule({
@@ -14,6 +14,7 @@ import { FooterComponent } from './footer/footer.component';
     AppRoutingModule,
     CommonModule,
     MatMenuModule,
+    FlexLayoutModule,
     MatToolbarModule
   ],
   exports: [

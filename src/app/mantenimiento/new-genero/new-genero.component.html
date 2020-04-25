@@ -1,0 +1,19 @@
+<div id="container">
+  <h1>Nuevo Género</h1>
+  <form [formGroup]="generoForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="fill">
+      <mat-label>Nombre</mat-label>
+      <input matInput type="text" formControlName="nombre">
+      <mat-error *ngIf="hasError('nombre','required')" >Nombre es obligatorio</mat-error>
+      <mat-error *ngIf="hasError('nombre','maxlength')" >El nombre es más largo de lo permitido</mat-error>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill" >
+      <mat-label>Descripción</mat-label>
+      <textarea matInput type="text" formControlName="descripcion"></textarea>
+      <mat-error *ngIf="hasError('descripcion','required')" >Descripción es obligatorio</mat-error>
+    </mat-form-field>
+    <br>
+    <button mat-raised-button color="basic" [disabled]="!generoForm.valid">Crear</button>
+  </form>
+</div>
