@@ -1,8 +1,24 @@
 <mat-toolbar color="primary">
   <mat-toolbar-row>
-    <h1>MisCines</h1>
+    <b [routerLink]="['']">MisCines</b>
     &nbsp;&nbsp;&nbsp;
-    <a mat-button [matMenuTriggerFor]="entidades"> <h3>Mantenimiento</h3> </a>
+    <!-- Este div se imprimirá si estamos loggeados -->
+    <div *ngIf="auth.user">
+      <!-- Este if se imprimirá si el usuario es Admin -->
+      <div *ngIf="role == 'Admin'" >
+        <a mat-button [matMenuTriggerFor]="entidades"> <h3>Mantenimiento</h3> </a>
+        &nbsp;&nbsp;&nbsp;
+        <a class="admin" >{{auth.user.displayName}}  <fa-icon *ngIf="role == 'Admin' " [icon]="verified" class="admin"></fa-icon></a>
+        &nbsp;&nbsp;&nbsp;
+        <!-- Si el usuario es admin se imprimirá este icono -->
+        <fa-icon mat-button (click)="logout()" [icon]="exit"></fa-icon>
+      </div>
+    </div>
+    <span class="example-spacer"></span>
+    &nbsp;&nbsp;&nbsp;
+    <b mat-button [routerLink]="['register']"> <h3>Register</h3></b>
+    &nbsp;&nbsp;&nbsp;
+    <b mat-button [routerLink]="['login']"> <h3>Login</h3> </b>
   </mat-toolbar-row>
 
 
@@ -44,4 +60,6 @@
     <button mat-menu-item [routerLink]="['sesion']">Listado</button>
     <button mat-menu-item [routerLink]="['new-sesion']">Nuevo</button>
   </mat-menu>
+
+
 </mat-toolbar>

@@ -1,0 +1,39 @@
+<div id="container">
+  <h1>Bienvenido</h1>
+  <form [formGroup]="registerForm" (ngSubmit)="register()">
+    <mat-form-field appearance="fill">
+      <mat-label>Username</mat-label>
+      <input matInput #username type="text" formControlName="username">
+      <mat-error *ngIf="hasError('username','required')" >El username es obligatorio</mat-error>
+      <mat-error *ngIf="hasError('username','maxlength')" >El username es más largo de lo permitido</mat-error>
+      <mat-hint align="end">{{username.value.length}} / 15</mat-hint>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" formControlName="email">
+      <mat-error *ngIf="hasError('email','required')" >El email es obligatorio</mat-error>
+      <mat-error *ngIf="hasError('email','email')" >Esto no es un email</mat-error>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+      <mat-label>Password</mat-label>
+      <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
+      <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+      <mat-error *ngIf="hasError('password','required')" >La contraseña es obligatoria</mat-error>
+      <mat-error *ngIf="hasError('password','minlength')" >La contraseña no cumple la longitud mínima (6) </mat-error>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+      <mat-label>Confirm Password</mat-label>
+      <input matInput [type]="hide ? 'password' : 'text'" formControlName="confirmPassword">
+      <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+      <mat-error *ngIf="hasError('confirmPassword','required')" >Tienes que confirmar la contraseña</mat-error>
+    </mat-form-field>
+    <br>
+    <mat-error *ngIf="registerForm.invalid && registerFormControl.password.dirty && registerFormControl.confirmPassword.dirty">
+      No coinciden las contraseñas
+    </mat-error>
+    <button mat-raised-button color="basic" [disabled]="!registerForm.valid">Crear</button>
+  </form>
+</div>

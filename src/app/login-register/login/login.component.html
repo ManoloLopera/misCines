@@ -1,0 +1,22 @@
+<div id="container">
+  <h1>Bienvenido</h1>
+  <form [formGroup]="loginForm" (ngSubmit)="login()">
+    <mat-form-field appearance="fill">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" formControlName="email">
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+      <mat-label>Password</mat-label>
+      <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
+      <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+    </mat-form-field>
+    <br>
+    <mat-error *ngIf="error">
+      Email o Contraseña incorrecto
+    </mat-error>
+    <button mat-raised-button color="basic" [disabled]="!loginForm.valid">Crear</button>
+  </form>
+
+  <p>Si no estás registrado ... ¡ Registrate <a [routerLink]="['/register']"> aquí </a> !</p>
+</div>

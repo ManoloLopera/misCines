@@ -30,3 +30,7 @@ table {
   margin-left:auto;
   margin-right:auto;
 }
+
+.admin {
+  color: rgb(240, 165, 15)
+}

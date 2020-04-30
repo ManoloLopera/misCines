@@ -6,6 +6,9 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
 import { FooterComponent } from './footer/footer.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatButtonModule } from '@angular/material/button';
 
 
 @NgModule({
@@ -15,7 +18,10 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     CommonModule,
     MatMenuModule,
     FlexLayoutModule,
-    MatToolbarModule
+    MatToolbarModule,
+    FontAwesomeModule,
+    MatSnackBarModule,
+    MatButtonModule
   ],
   exports: [
     MenuComponent,

@@ -1,3 +1,5 @@
+import { AuthService } from './services/auth.service';
+import { LoginRegisterModule } from './login-register/login-register.module';
 import { MantenimientoModule } from './mantenimiento/mantenimiento.module';
 import { ComponentesModule } from './componentes/componentes.module';
 import { BrowserModule } from '@angular/platform-browser';
@@ -27,12 +29,13 @@ import 'firebase/firestore';
     BrowserAnimationsModule,
     ComponentesModule,
     MantenimientoModule,
+    LoginRegisterModule,
     FlexLayoutModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule,
     AngularFireAuthModule
   ],
-  providers: [],
+  providers: [AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
