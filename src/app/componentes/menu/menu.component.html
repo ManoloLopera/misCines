@@ -8,9 +8,13 @@
       <div *ngIf="role == 'Admin'" >
         <a mat-button [matMenuTriggerFor]="entidades"> <h3>Mantenimiento</h3> </a>
         &nbsp;&nbsp;&nbsp;
-        <a class="admin" >{{auth.user.displayName}}  <fa-icon *ngIf="role == 'Admin' " [icon]="verified" class="admin"></fa-icon></a>
+        <a class="admin" >{{auth.user.displayName}}  <fa-icon [icon]="verified" class="admin"></fa-icon></a>
         &nbsp;&nbsp;&nbsp;
-        <!-- Si el usuario es admin se imprimirá este icono -->
+        <fa-icon mat-button (click)="logout()" [icon]="exit"></fa-icon>
+      </div>
+      <div *ngIf="role == 'User'">
+        <a>{{auth.user.displayName}}</a>
+        &nbsp;&nbsp;&nbsp;
         <fa-icon mat-button (click)="logout()" [icon]="exit"></fa-icon>
       </div>
     </div>

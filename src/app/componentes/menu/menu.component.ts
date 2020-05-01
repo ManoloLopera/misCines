@@ -64,11 +64,9 @@ export class MenuComponent implements OnInit {
   isAdmin(user: firebase.User) {
     let role;
     const subject = new Subject<string>();
-    console.log(user.uid);
     this.serviceUser.getUsuario(user.uid).subscribe(
       usuario => {
         role = usuario.payload.get('role');
-        console.log(role);
         subject.next(role);
       }
     );

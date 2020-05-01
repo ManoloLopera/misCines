@@ -1,3 +1,4 @@
+import { AuthGuardService } from './../services/auth-guard.service';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { MatTableModule } from '@angular/material/table';
@@ -38,25 +39,101 @@ import { EditSalaComponent } from './edit-sala/edit-sala.component';
 import { EditSesionComponent } from './edit-sesion/edit-sesion.component';
 
 const routes: Routes = [
-  {path: 'genero', component: GeneroComponent},
-  {path: 'idioma', component: IdiomaComponent},
-  {path: 'cine', component: CineComponent},
-  {path: 'pelicula', component: PeliculaComponent},
-  {path: 'salas', component: SalaComponent},
-  {path: 'sesion', component: SesionComponent},
-  {path: 'new-idioma', component: NewIdiomaComponent},
-  {path: 'new-genero', component: NewGeneroComponent},
-  {path: 'new-pelicula', component: NewPeliculaComponent},
-  {path: 'new-cine', component: NewCineComponent},
-  {path: 'new-sala', component: NewSalaComponent},
-  {path: 'new-sesion', component: NewSesionComponent},
-  {path: 'det-pelicula/:id', component: DetPeliculaComponent},
-  {path: 'genero/:id', component: EditGeneroComponent},
-  {path: 'cine/:id', component: EditCineComponent},
-  {path: 'idioma/:id', component: EditIdiomaComponent},
-  {path: 'pelicula/:id', component: EditPeliculaComponent},
-  {path: 'sala/:id', component: EditSalaComponent},
-  {path: 'sesion/:id', component: EditSesionComponent}
+  {
+    path: 'genero',
+    component: GeneroComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'idioma',
+    component: IdiomaComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'cine',
+    component: CineComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'pelicula',
+    component: PeliculaComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'salas',
+    component: SalaComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'sesion',
+    component: SesionComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'new-idioma',
+    component: NewIdiomaComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'new-genero',
+    component: NewGeneroComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'new-pelicula',
+    component: NewPeliculaComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'new-cine',
+    component: NewCineComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'new-sala',
+    component: NewSalaComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'new-sesion',
+    component: NewSesionComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'det-pelicula/:id',
+    component: DetPeliculaComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'genero/:id',
+    component: EditGeneroComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'cine/:id',
+    component: EditCineComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'idioma/:id',
+    component: EditIdiomaComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'pelicula/:id',
+    component: EditPeliculaComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'sala/:id',
+    component: EditSalaComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'sesion/:id',
+    component: EditSesionComponent,
+    canActivate: [AuthGuardService]
+  }
 ];
 @NgModule({
   declarations: [GeneroComponent, IdiomaComponent, CineComponent, PeliculaComponent, SalaComponent, SesionComponent

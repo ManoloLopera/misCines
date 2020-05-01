@@ -5,6 +5,7 @@ import { Component, OnInit } from '@angular/core';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { MatTableDataSource } from '@angular/material/table';
 import { Sala } from 'src/app/models/sala';
+import { Subject } from 'rxjs';
 
 
 @Component({
@@ -24,6 +25,15 @@ export class SalaComponent implements OnInit {
   ngOnInit(): void {
     this.servicioSala.getSalas().subscribe(
       salas => {
+        salas.forEach(
+          (sala) => {
+            this.dameElNombreCine(sala.cine).subscribe(
+              (nombre) => {
+                sala.cine = nombre + '';
+              }
+            );
+          }
+        );
         this.datos.data = salas;
       }
     );
@@ -36,6 +46,18 @@ export class SalaComponent implements OnInit {
           this.datos.data = salas;
         }
       );
+  }
+
+  dameElNombreCine(id: string) {
+    let nombre;
+    const subject = new Subject();
+    this.servicioCine.getCine(id).subscribe(
+      (esteCine) => {
+        nombre = esteCine.payload.get('nombre'),
+        subject.next(nombre);
+      }
+    );
+    return subject.asObservable();
   }
 
 }
