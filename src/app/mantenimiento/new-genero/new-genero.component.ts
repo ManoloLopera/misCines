@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { FirestoreGeneroService } from './../../services/firestore-genero.service';
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-
+import { faDoorOpen } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'app-new-genero',
   templateUrl: './new-genero.component.html',
@@ -11,6 +11,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NewGeneroComponent implements OnInit {
 
+  volver = faDoorOpen;
   generoForm = new FormGroup({
     nombre: new FormControl('', [
       Validators.required,

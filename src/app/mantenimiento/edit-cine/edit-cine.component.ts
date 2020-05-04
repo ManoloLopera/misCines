@@ -3,7 +3,7 @@ import { FirestoreCineService } from './../../services/firestore-cine.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-
+import { faDoorOpen } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'app-edit-cine',
   templateUrl: './edit-cine.component.html',
@@ -12,6 +12,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 export class EditCineComponent implements OnInit {
 
   idEditado;
+  volver = faDoorOpen;
   cine: Cine = {nombre: '', num_sala: 0, precio: 0, hora_inicio: '', hora_fin: ''};
   cineForm = new FormGroup({
     nombre: new FormControl('', [

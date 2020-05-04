@@ -4,7 +4,7 @@ import { FirestoreIdiomaService } from './../../services/firestore-idioma.servic
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-
+import { faDoorOpen } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'app-edit-idioma',
   templateUrl: './edit-idioma.component.html',
@@ -17,6 +17,7 @@ export class EditIdiomaComponent implements OnInit {
     nombre: new FormControl(null, Validators.required),
     imagen: new FormControl(null, Validators.required)
   });
+  volver = faDoorOpen;
 
   mensajeArchivo = 'No hay ningún archivo seleccionado';
   datosFormulario = new FormData();

@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Cine } from 'src/app/models/cine';
-
+import { faDoorOpen } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'app-edit-sala',
   templateUrl: './edit-sala.component.html',
@@ -16,7 +16,7 @@ export class EditSalaComponent implements OnInit {
   idEditado;
   selectedCine;
   salaEditada: Sala = {aforo: 0, cine: '', num_sala: 0};
-
+  volver = faDoorOpen;
   salaForm = new FormGroup({
     aforo: new FormControl('', [
       Validators.required

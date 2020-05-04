@@ -10,7 +10,8 @@ import { Sesion } from 'src/app/models/sesion';
 import { Pelicula } from 'src/app/models/pelicula';
 import { Sala } from 'src/app/models/sala';
 import { Subject } from 'rxjs';
-
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { faDoorOpen } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'app-edit-sesion',
   templateUrl: './edit-sesion.component.html',
@@ -22,7 +23,8 @@ export class EditSesionComponent implements OnInit {
   sesionSeleccionada: Sesion = {hora_fin: '', hora_inicio: '', sala: '', fecha_sesion: '', pelicula: ''};
   peliculasApp: Pelicula[];
   salasApp: Sala[];
-
+  formattedDate: string;
+  volver = faDoorOpen;
   constructor(
     private route: ActivatedRoute,
     private servicioSesion: FirestoreSesionService,
@@ -82,7 +84,6 @@ export class EditSesionComponent implements OnInit {
   dameElNombreCine(id: string) {
     let nombre;
     const subject = new Subject<string>();
-    console.log(id);
     this.servicioCine.getCine(id).subscribe(
       esteCine => {
         nombre = esteCine.payload.get('nombre');
@@ -100,11 +101,25 @@ export class EditSesionComponent implements OnInit {
     this.sesionForm.get('hora_fin').setValue(sesion.hora_fin);
   }
 
+  // Aquí le doy formato a la fecha que sale del DatePicker
+  first(event: MatDatepickerInputEvent<Date>) {
+    // const fecha = event.value.format('DD-MM-YYYY');
+    const fecha = new Date (event.value);
+    // Necesito DD (sin esto de los días 1-9 obtengo '1', y necesito '01')
+    const dia = ('0' + fecha.getDate()).slice(-2);
+    // Le tengo que sumar 1 porque sino me da el mes anterior (ya sabemos cómo funcionan los arrays y su índice 0)
+    // Y el '0' es porque por ejemplo en febrero (contando el +1) me devuelve '2', y necesito el '02'
+    const mes = ('0' + (fecha.getMonth() + 1)).slice(-2);
+    const año = fecha.getFullYear();
+    // En formularios lo meto como año-mes-dia para no tener que desmontar todo el tema de las fechas
+    this.formattedDate = año + '-' + mes + '-' +  dia ;
+  }
+
   onSubmit() {
     const sesionNueva: Sesion = {
       sala: String(this.sesionForm.get('sala').value),
       pelicula: String(this.sesionForm.get('pelicula').value),
-      fecha_sesion: String(this.sesionForm.get('fecha_sesion').value),
+      fecha_sesion: this.formattedDate,
       hora_inicio: String(this.sesionForm.get('hora_inicio').value),
       hora_fin: String(this.sesionForm.get('hora_fin').value)
     };

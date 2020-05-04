@@ -1,7 +1,53 @@
 <div id="main">
   <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-around center">
     <div fxLayout="column" id="filtros">
-      
+      <div fxLayout="column" class="filtro">
+        <mat-card class="example-card">
+          <mat-card-header>
+            <mat-card-title>Cine</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <mat-select formControlName="cine">
+              <!-- <mat-option *ngFor="let genero of generoApp" [value]="genero.id">
+                {{genero.nombre}}
+              </mat-option> -->
+            </mat-select>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <div fxLayout="column" class="filtro">
+        <mat-card class="example-card">
+          <mat-card-header>
+            <mat-card-title>Género</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <mat-select formControlName="genero">
+              <!-- <mat-option *ngFor="let genero of generoApp" [value]="genero.id">
+                {{genero.nombre}}
+              </mat-option> -->
+            </mat-select>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <div fxLayout="column" class="filtro">
+        <mat-card class="example-card">
+          <mat-card-header>
+            <mat-card-title>Fecha</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <mat-form-field class="example-full-width">
+              <input #startDate matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker" (dateInput)="first($event)" placeholder="Enter date">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+            <br>
+            Current: {{formattedDate}}
+          </mat-card-content>
+        </mat-card>
+      </div>
+
     </div>
     <div fxLayout="column"id ="peliculas"></div>
   </div>

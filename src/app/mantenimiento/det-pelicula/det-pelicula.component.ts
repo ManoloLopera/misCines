@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Genero } from 'src/app/models/genero';
 import { Idioma } from 'src/app/models/idioma';
+import { faDoorOpen } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-det-pelicula',
@@ -17,8 +18,9 @@ export class DetPeliculaComponent implements OnInit {
   peliculaId;
   genero: Genero = {nombre: '', descripcion: ''};
   idioma: Idioma = {nombre: '', imagen: ''};
-  peliculaDet: Pelicula = {nombre: '', director: '', estreno: new Date(),
+  peliculaDet: Pelicula = {nombre: '', director: '', estreno: '',
               duracion: '', idioma: '', genero: '', sinopsis: '', imagen: ''};
+  volver = faDoorOpen;
   constructor(private route: ActivatedRoute,
               private servicio: FirestorePeliculaService,
               private servicioGenero: FirestoreGeneroService,

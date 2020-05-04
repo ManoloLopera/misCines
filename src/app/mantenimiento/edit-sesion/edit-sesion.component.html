@@ -1,5 +1,5 @@
 <div id="container">
-  <h1 class="is-size-1">Añadir Sesión</h1>
+  <h1 class="is-size-1">Editar Sesión</h1>
 
   <form [formGroup]="sesionForm" (ngSubmit)="onSubmit()">
     <mat-form-field appearance="fill">
@@ -19,8 +19,9 @@
       </mat-select>
     </mat-form-field>
     <mat-form-field appearance="fill">
-      <mat-label>Fecha</mat-label>
-      <input matInput type="date" formControlName="fecha_sesion">
+      <input #startDate matInput formControlName="fecha_sesion" [matDatepicker]="picker" (dateInput)="first($event)" placeholder="Enter date">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
     <mat-form-field appearance="fill" >
       <mat-label>Hora Inicio</mat-label>
@@ -30,7 +31,12 @@
       <mat-label>Hora Fin</mat-label>
       <input matInput type="time" formControlName="hora_fin" step="1">
     </mat-form-field>
-    <button mat-raised-button color="basic">Crear</button>
+    <button mat-raised-button color="basic">Editar</button>
   </form>
   <br>
+  <br>
+  <button mat-raised-button color="accent" [routerLink]="['/sesion']">
+    <fa-icon [icon]="volver"></fa-icon>
+  </button>
+  <br><br><br>
 </div>

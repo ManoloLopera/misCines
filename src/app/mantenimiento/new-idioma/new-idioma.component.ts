@@ -5,14 +5,14 @@ import { FirestoreStorageService } from './../../services/firestore-storage.serv
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import * as firebase from 'firebase';
-
+import { faDoorOpen } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'app-new-idioma',
   templateUrl: './new-idioma.component.html',
   styleUrls: ['./new-idioma.component.css']
 })
 export class NewIdiomaComponent implements OnInit {
-
+  volver = faDoorOpen;
   idiomaForm = new FormGroup({
     nombre: new FormControl(null, Validators.required),
     imagen: new FormControl(null, Validators.required)

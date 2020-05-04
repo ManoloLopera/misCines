@@ -8,7 +8,8 @@ import { FirestoreIdiomaService } from './../../services/firestore-idioma.servic
 import { FirestoreGeneroService } from './../../services/firestore-genero.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Genero } from 'src/app/models/genero';
-
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { faDoorOpen } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'app-new-pelicula',
   templateUrl: './new-pelicula.component.html',
@@ -16,6 +17,7 @@ import { Genero } from 'src/app/models/genero';
 })
 export class NewPeliculaComponent implements OnInit {
 
+  volver = faDoorOpen;
   mensajeArchivo = 'No hay ningún archivo seleccionado';
   datosFormulario = new FormData();
   // Nombre del archivo que subiremos al Cloud Firestore
@@ -29,6 +31,7 @@ export class NewPeliculaComponent implements OnInit {
   generoApp: Genero[];
   idiomaApp: Idioma[];
 
+  formattedDate: string;
   peliculaForm = new FormGroup({
     nombre: new FormControl('', Validators.required),
     imagen: new FormControl('', Validators.required),
@@ -73,10 +76,24 @@ export class NewPeliculaComponent implements OnInit {
     }
   }
 
+  // Aquí le doy formato a la fecha que sale del DatePicker
+  first(event: MatDatepickerInputEvent<Date>) {
+    // const fecha = event.value.format('DD-MM-YYYY');
+    const fecha = new Date (event.value);
+    // Necesito DD (sin esto de los días 1-9 obtengo '1', y necesito '01')
+    const dia = ('0' + fecha.getDate()).slice(-2);
+    // Le tengo que sumar 1 porque sino me da el mes anterior (ya sabemos cómo funcionan los arrays y su índice 0)
+    // Y el '0' es porque por ejemplo en febrero (contando el +1) me devuelve '2', y necesito el '02'
+    const mes = ('0' + (fecha.getMonth() + 1)).slice(-2);
+    const año = fecha.getFullYear();
+    // En formularios lo meto como año-mes-dia para no tener que desmontar todo el tema de las fechas
+    this.formattedDate = año + '-' + mes + '-' +  dia ;
+  }
+
   onSubmit() {
-    let archivo = this.datosFormulario.get('archivo');
-    let referencia = this.firestorage.referenceCloudStorage(this.nombreArchivo);
-    let tarea = this.firestorage.cloudStorage(this.nombreArchivo, archivo);
+    const archivo = this.datosFormulario.get('archivo');
+    const referencia = this.firestorage.referenceCloudStorage(this.nombreArchivo);
+    const tarea = this.firestorage.cloudStorage(this.nombreArchivo, archivo);
     // Cambia el porcentaje
     tarea.percentageChanges().subscribe((porcentaje) => {
       this.porcentaje = Math.round(porcentaje);
@@ -94,7 +111,7 @@ export class NewPeliculaComponent implements OnInit {
           sinopsis: String(this.peliculaForm.get('sinopsis').value),
           director: String(this.peliculaForm.get('director').value),
           duracion: String(this.peliculaForm.get('duracion').value),
-          estreno: this.peliculaForm.get('estreno').value,
+          estreno: this.formattedDate,
           genero: String(this.peliculaForm.get('genero').value),
           idioma: String(this.peliculaForm.get('idioma').value)
         };

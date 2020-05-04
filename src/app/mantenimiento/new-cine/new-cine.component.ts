@@ -4,7 +4,7 @@ import { FirestoreCineService } from './../../services/firestore-cine.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-
+import { faDoorOpen } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'app-new-cine',
   templateUrl: './new-cine.component.html',
@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 })
 export class NewCineComponent implements OnInit {
 
+  volver = faDoorOpen;
   cineForm = new FormGroup({
     nombre: new FormControl('', [
       Validators.required,

@@ -19,8 +19,9 @@
       </mat-select>
     </mat-form-field>
     <mat-form-field appearance="fill">
-      <mat-label>Fecha</mat-label>
-      <input matInput type="date" formControlName="fecha_sesion">
+      <input #startDate matInput formControlName="fecha_sesion" [matDatepicker]="picker" (dateInput)="first($event)" placeholder="Enter date">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
     <mat-form-field appearance="fill" >
       <mat-label>Hora Inicio</mat-label>
@@ -33,4 +34,8 @@
     <button mat-raised-button color="basic">Crear</button>
   </form>
   <br>
+  <button mat-raised-button color="accent" [routerLink]="['/sesion']">
+    <fa-icon [icon]="volver"></fa-icon>
+  </button>
+  <br><br><br>
 </div>

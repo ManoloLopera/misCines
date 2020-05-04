@@ -10,10 +10,14 @@
       <strong>Duración :</strong> {{peliculaDet.duracion}} <br>
       <strong>Género : </strong> {{dameElNombreGenero(peliculaDet.genero)}} <br>
       <strong>Idioma : </strong> {{dameElNombreIdioma(peliculaDet.idioma)}} <br>
-      <strong>Estreno : </strong> {{peliculaDet.estreno | date:'mediumDate'}} <br>
+      <strong>Estreno : </strong> {{peliculaDet.estreno | date:'longDate'}} <br>
     </p>
     <p>
       <strong>Sinopsis :</strong> {{peliculaDet.sinopsis}}
     </p>
   </mat-card-content>
 </mat-card>
+
+<button mat-raised-button color="accent" [routerLink]="['/pelicula']">
+  <fa-icon [icon]="volver"></fa-icon>
+</button>

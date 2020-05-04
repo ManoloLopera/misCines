@@ -22,4 +22,9 @@
       <progress *ngIf="porcentaje > 0 && porcentaje < 100" class="progress is-large is-success" value="{{porcentaje}}" max="100">{{porcentaje}}%</progress>
       <button mat-raised-button color="basic" [ngClass]="{'button': true, 'is-success': true, 'is-large': true, 'is-loading': porcentaje > 0 && porcentaje < 100}" [disabled]="!idiomaForm.valid && (porcentaje > 0 && porcentaje < 100)">Crear</button>
     </form>
+  <br>
+  <button mat-raised-button color="accent" [routerLink]="['/idioma']">
+    <fa-icon [icon]="volver"></fa-icon>
+  </button>
+  <br><br><br>
 </div>

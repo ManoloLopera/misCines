@@ -3,7 +3,7 @@ import { FirestoreGeneroService } from './../../services/firestore-genero.servic
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-
+import { faDoorOpen } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'app-edit-genero',
   templateUrl: './edit-genero.component.html',
@@ -12,6 +12,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 export class EditGeneroComponent implements OnInit {
 
   idEditado;
+  volver = faDoorOpen;
   genero: Genero = {nombre: '', descripcion: ''};
   generoForm = new FormGroup({
     nombre: new FormControl('', [

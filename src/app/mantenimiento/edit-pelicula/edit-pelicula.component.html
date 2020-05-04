@@ -27,8 +27,9 @@
       <input matInput formControlName="director">
     </mat-form-field>
     <mat-form-field appearance="fill">
-      <mat-label>Estreno</mat-label>
-      <input matInput type="date" formControlName="estreno">
+      <input #startDate matInput formControlName="estreno" [matDatepicker]="picker" (dateInput)="first($event)" placeholder="Enter date">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
     <mat-form-field appearance="fill" >
       <mat-label>Duracion</mat-label>
@@ -56,4 +57,8 @@
     <button mat-raised-button color="basic" [ngClass]="{'button': true, 'is-success': true, 'is-large': true, 'is-loading': porcentaje > 0 && porcentaje < 100}" [disabled]="!peliculaForm.valid && (porcentaje > 0 && porcentaje < 100)">Editar</button>
   </form>
   <br>
+  <button mat-raised-button color="accent" [routerLink]="['/pelicula']">
+    <fa-icon [icon]="volver"></fa-icon>
+  </button>
+  <br><br><br>
 </div>

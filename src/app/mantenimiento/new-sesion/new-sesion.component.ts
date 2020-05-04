@@ -9,7 +9,8 @@ import { FirestoreSesionService } from './../../services/firestore-sesion.servic
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
-
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { faDoorOpen } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'app-new-sesion',
   templateUrl: './new-sesion.component.html',
@@ -17,6 +18,7 @@ import { Subject } from 'rxjs';
 })
 export class NewSesionComponent implements OnInit {
 
+  volver = faDoorOpen;
   peliculasApp: Pelicula[];
   salasApp: Sala[];
 
@@ -24,6 +26,7 @@ export class NewSesionComponent implements OnInit {
   numSala;
   nombreCine;
 
+  formattedDate: string;
   constructor(
     private servicioSesion: FirestoreSesionService,
     private servicioPelicula: FirestorePeliculaService,
@@ -78,12 +81,24 @@ export class NewSesionComponent implements OnInit {
     return subject.asObservable();
   }
 
+  // Aquí le doy formato a la fecha que sale del DatePicker
+  first(event: MatDatepickerInputEvent<Date>) {
+    // const fecha = event.value.format('DD-MM-YYYY');
+    const fecha = new Date (event.value);
+    const dia = ('0' + fecha.getDate()).slice(-2);
+    // Le tengo que sumar 1 porque sino me da el mes anterior (ya sabemos cómo funcionan los arrays y su índice 0)
+    // Y el '0' es porque por ejemplo en febrero (contando el +1) me devuelve '2', y necesito el '02'
+    const mes = ('0' + (fecha.getMonth() + 1)).slice(-2);
+    const año = fecha.getFullYear();
+    // En formularios lo meto como año-mes-dia para no tener que desmontar todo el tema de las fechas
+    this.formattedDate = año + '-' + mes + '-' +  dia ;
+  }
 
   onSubmit() {
     const sesionNueva: Sesion = {
       sala: String(this.sesionForm.get('sala').value),
       pelicula: String(this.sesionForm.get('pelicula').value),
-      fecha_sesion: String(this.sesionForm.get('fecha_sesion').value),
+      fecha_sesion: this.formattedDate,
       hora_inicio: String(this.sesionForm.get('hora_inicio').value),
       hora_fin: String(this.sesionForm.get('hora_fin').value)
     };

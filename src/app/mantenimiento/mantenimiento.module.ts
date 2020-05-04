@@ -8,6 +8,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -37,6 +39,7 @@ import { EditIdiomaComponent } from './edit-idioma/edit-idioma.component';
 import { EditPeliculaComponent } from './edit-pelicula/edit-pelicula.component';
 import { EditSalaComponent } from './edit-sala/edit-sala.component';
 import { EditSesionComponent } from './edit-sesion/edit-sesion.component';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 const routes: Routes = [
   {
@@ -153,6 +156,8 @@ const routes: Routes = [
     MatSelectModule,
     MatCardModule,
     AngularFireStorageModule,
+    MatDatepickerModule,
+    MatMomentDateModule,
     RouterModule.forChild(routes)
   ]
 })

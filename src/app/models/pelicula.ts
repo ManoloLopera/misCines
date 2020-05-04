@@ -2,7 +2,7 @@ export class Pelicula {
   id?: string;
   director: string;
   duracion: string;
-  estreno: Date;
+  estreno: string;
   genero: string;
   idioma: string;
   imagen: string;

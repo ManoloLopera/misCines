@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Sala } from 'src/app/models/sala';
-
+import { faDoorOpen } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'app-new-sala',
   templateUrl: './new-sala.component.html',
@@ -13,6 +13,7 @@ import { Sala } from 'src/app/models/sala';
 })
 export class NewSalaComponent implements OnInit {
 
+  volver = faDoorOpen;
   salaForm = new FormGroup({
     aforo: new FormControl('', Validators.required),
     cine: new FormControl('', Validators.required),
