@@ -28,6 +28,13 @@ export class FirestoreSesionService {
     return this.database.collection<Sesion>('sesion').doc(id).snapshotChanges();
   }
 
+  getSesionesPorFecha(fecha_sesion: string) {
+    const refPeliculas = this.database.collection<Sesion>('sesion').ref;
+    const query = refPeliculas.where('fecha_sesion', '==', fecha_sesion);
+
+    return query.get();
+  }
+
   addSesion(sesion: Sesion) {
     return this.database.collection('sesion').add(sesion);
   }

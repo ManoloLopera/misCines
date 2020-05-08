@@ -22,10 +22,11 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { FormsModule } from '@angular/forms';
 
 import 'firebase/firestore';
-import * as moment from 'moment';
-import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,11 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
     MatSelectModule,
     MatCardModule,
     MatDatepickerModule,
-    MatMomentDateModule
+    MatMomentDateModule,
+    MatDividerModule,
+    MatTooltipModule,
+    FormsModule
+
   ],
   providers: [AuthService],
   bootstrap: [AppComponent]

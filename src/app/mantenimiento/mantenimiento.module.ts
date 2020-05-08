@@ -39,7 +39,6 @@ import { EditIdiomaComponent } from './edit-idioma/edit-idioma.component';
 import { EditPeliculaComponent } from './edit-pelicula/edit-pelicula.component';
 import { EditSalaComponent } from './edit-sala/edit-sala.component';
 import { EditSesionComponent } from './edit-sesion/edit-sesion.component';
-import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 const routes: Routes = [
   {

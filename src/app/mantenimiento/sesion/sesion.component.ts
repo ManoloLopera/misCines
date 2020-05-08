@@ -62,7 +62,6 @@ export class SesionComponent implements OnInit {
   dameElNombreCine(id: string) {
     let nombre;
     const subject = new Subject<string>();
-    console.log(id);
     this.servicioCine.getCine(id).subscribe(
       esteCine => {
         nombre = esteCine.payload.get('nombre');

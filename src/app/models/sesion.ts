@@ -5,4 +5,5 @@ export class Sesion {
     pelicula: string;
     sala: string;
     id?: string;
+    portadaPelicula?: string;
 }
