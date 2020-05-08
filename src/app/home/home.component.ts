@@ -8,7 +8,6 @@ import { Component, OnInit } from '@angular/core';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { FirestoreSesionService } from '../services/firestore-sesion.service';
 import { Sesion } from '../models/sesion';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Subject } from 'rxjs';
 
 @Component({

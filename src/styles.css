@@ -31,6 +31,10 @@ table {
   margin-right:auto;
 }
 
+table > ma-paginator{
+  width: 80%;
+}
+
 .admin {
   color: rgb(240, 165, 15)
 }

@@ -4,10 +4,11 @@ import { FirestoreIdiomaService } from './../../services/firestore-idioma.servic
 import { Pelicula } from './../../models/pelicula';
 import { MatTableDataSource } from '@angular/material/table';
 import { FirestorePeliculaService } from './../../services/firestore-pelicula.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { faEye, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Genero } from 'src/app/models/genero';
 import { Subject } from 'rxjs';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-pelicula',
@@ -21,9 +22,11 @@ export class PeliculaComponent implements OnInit {
               private servicioIdioma: FirestoreIdiomaService,
               private servicioGenero: FirestoreGeneroService) { }
   datos = new MatTableDataSource();
+  @ViewChild('paginator') paginator: MatPaginator;
   ver = faEye;
   editar = faEdit;
   borrar = faTrash;
+  length: number;
 
   ngOnInit(): void {
     this.servicioPelicula.getPeliculas().subscribe(
@@ -42,7 +45,10 @@ export class PeliculaComponent implements OnInit {
             );
           }
         );
+        this.length = peliculas.length;
         this.datos.data = peliculas;
+        // Gracias stackoverflow
+        setTimeout(() => this.datos.paginator = this.paginator);
       }
     );
   }

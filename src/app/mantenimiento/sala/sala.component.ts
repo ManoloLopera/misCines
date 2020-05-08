@@ -1,11 +1,12 @@
 import { Cine } from './../../models/cine';
 import { FirestoreCineService } from './../../services/firestore-cine.service';
 import { FirestoreSalaService } from './../../services/firestore-sala.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { MatTableDataSource } from '@angular/material/table';
 import { Sala } from 'src/app/models/sala';
 import { Subject } from 'rxjs';
+import { MatPaginator } from '@angular/material/paginator';
 
 
 @Component({
@@ -17,6 +18,8 @@ export class SalaComponent implements OnInit {
 
   datos = new MatTableDataSource();
   columnas: string[] = ['Aforo', 'Cine', 'Num_Sala', 'Accion'];
+  @ViewChild('paginator') paginator: MatPaginator;
+  length: number;
   constructor(private servicioSala: FirestoreSalaService,
               private servicioCine: FirestoreCineService) { }
   editar = faEdit;
@@ -34,7 +37,10 @@ export class SalaComponent implements OnInit {
             );
           }
         );
+        this.length = salas.length;
         this.datos.data = salas;
+        // Gracias stackoverflow
+        setTimeout(() => this.datos.paginator = this.paginator);
       }
     );
   }

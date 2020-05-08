@@ -1,9 +1,10 @@
 import { Cine } from './../../models/cine';
 import { FirestoreCineService } from './../../services/firestore-cine.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Timestamp } from 'rxjs/internal/operators/timestamp';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-cine',
@@ -17,12 +18,16 @@ export class CineComponent implements OnInit {
   datos = new MatTableDataSource();
   editar = faEdit;
   borrar = faTrash;
+  @ViewChild('paginator') paginator: MatPaginator;
+  length: number;
 
   ngOnInit(): void {
     this.servicio.getCines().subscribe(
       cines => {
+        this.length = cines.length;
         this.datos.data = cines;
-        console.log(cines);
+        // Gracias stackoverflow
+        setTimeout(() => this.datos.paginator = this.paginator);
       }
     );
   }

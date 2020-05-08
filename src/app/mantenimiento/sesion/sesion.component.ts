@@ -4,9 +4,10 @@ import { FirestoreSalaService } from './../../services/firestore-sala.service';
 import { FirestorePeliculaService } from './../../services/firestore-pelicula.service';
 import { FirestoreCineService } from './../../services/firestore-cine.service';
 import { FirestoreSesionService } from './../../services/firestore-sesion.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Subject } from 'rxjs';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-sesion',
@@ -16,7 +17,9 @@ import { Subject } from 'rxjs';
 export class SesionComponent implements OnInit {
 
   datos = new MatTableDataSource();
+  @ViewChild('paginator') paginator: MatPaginator;
   columnas: string[] = ['Sala', 'Pelicula', 'Hora_Inicio', 'Hora_Fin', 'Accion'];
+  length: number;
 
   constructor(private servicioSesion: FirestoreSesionService,
               private servicioCine: FirestoreCineService,
@@ -42,7 +45,10 @@ export class SesionComponent implements OnInit {
             );
           }
         );
+        this.length = sesiones.length;
         this.datos.data = sesiones;
+        // Gracias stackoverflow
+        setTimeout(() => this.datos.paginator = this.paginator);
       }
     );
   }

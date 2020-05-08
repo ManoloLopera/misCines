@@ -10,6 +10,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -157,6 +158,7 @@ const routes: Routes = [
     AngularFireStorageModule,
     MatDatepickerModule,
     MatMomentDateModule,
+    MatPaginatorModule,
     RouterModule.forChild(routes)
   ]
 })

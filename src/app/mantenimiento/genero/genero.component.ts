@@ -1,8 +1,9 @@
 import { Genero } from './../../models/genero';
 import { MatTableDataSource } from '@angular/material/table';
 import { FirestoreGeneroService } from './../../services/firestore-genero.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-genero',
@@ -18,10 +19,15 @@ export class GeneroComponent implements OnInit {
 
   editar = faEdit;
   borrar = faTrash;
+  @ViewChild('paginator') paginator: MatPaginator;
+  length: number;
   ngOnInit(): void {
     this.servicio.getGeneros().subscribe(
       generos => {
+        this.length = generos.length;
         this.datos.data = generos;
+        // Gracias stackoverflow
+        setTimeout(() => this.datos.paginator = this.paginator);
       }
     );
   }
