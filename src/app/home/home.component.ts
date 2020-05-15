@@ -1,3 +1,4 @@
+import { FirestoreSalaService } from './../services/firestore-sala.service';
 import { Cine } from './../models/cine';
 import { FirestoreCineService } from './../services/firestore-cine.service';
 import { Pelicula } from './../models/pelicula';
@@ -8,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { FirestoreSesionService } from '../services/firestore-sesion.service';
 import { Sesion } from '../models/sesion';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -23,17 +24,18 @@ export class HomeComponent implements OnInit {
 
   generoApp: Genero[];
   sesionApp: Sesion[];
+  peliculasApp: Pelicula[];
   cineApp: Cine[];
 
   refGenero: string;
   refCine: string;
-  peliculasFiltradas: Pelicula[];
 
   constructor(
     private generoService: FirestoreGeneroService,
     private sesionService: FirestoreSesionService,
     private cineService: FirestoreCineService,
-    private servicioPelicula: FirestorePeliculaService
+    private servicioPelicula: FirestorePeliculaService,
+    private servicioSala: FirestoreSalaService
     ) {
     // Current Date
     this.minDate = new Date();
@@ -54,41 +56,20 @@ export class HomeComponent implements OnInit {
       }
     );
 
-    this.filtraPorFecha(this.minDate);
+    this.servicioPelicula.getPeliculas().subscribe(
+      (peliculas) => {
+        this.peliculasApp = peliculas;
+      }
+    );
 
-  }
-
-  // Aquí le doy formato a la fecha que sale del DatePicker (gracias stackoverflow)
-
-  first(event: MatDatepickerInputEvent<Date>) {
-    const fecha = new Date (event.value);
-    this.filtraPorFecha(fecha);
-
-  }
-
-  filtraPorFecha(fecha: Date) {
-    // Necesito DD (sin esto de los días 1-9 obtengo '1', y necesito '01')
-    const dia = ('0' + fecha.getDate()).slice(-2);
-    // Le tengo que sumar 1 porque sino me da el mes anterior (ya sabemos cómo funcionan los arrays y su índice 0)
-    // Y el '0' es porque por ejemplo en febrero (contando el +1) me devuelve '2', y necesito el '02'
-    const mes = ('0' + (fecha.getMonth() + 1)).slice(-2);
-    const año = fecha.getFullYear();
-
-    this.formattedDate = año + '-' + mes + '-' +  dia ;
-
-    this.sesionService.getSesionesPorFecha(this.formattedDate).then(
+    this.sesionService.getSesionesPorFecha(this.traductorFechaString(this.minDate)).then(
       (sesiones) => {
         this.sesionApp = sesiones.docs.map(
           sesion => {
             const data = sesion.data() as Sesion;
-            this.dameElNombrePelicula(data.pelicula).subscribe(
-              (nombrePelicula) => {
-                data.pelicula = nombrePelicula;
-              }
-            );
-            this.dameLaPortada(data.pelicula).subscribe(
-              (portada) => {
-                data.portadaPelicula = portada;
+            this.dameElCine(data.sala).subscribe(
+              (esteCine) => {
+                data.cine = esteCine;
               }
             );
             data.id = sesion.id;
@@ -97,31 +78,134 @@ export class HomeComponent implements OnInit {
         );
       }
     );
+
   }
 
-  dameElNombrePelicula(id: string) {
-    let nombre;
-    const subject = new Subject<string>();
-    this.servicioPelicula.getPelicula(id).subscribe(
-      (estaPelicula) => {
-        nombre = estaPelicula.payload.get('nombre');
-        subject.next(nombre);
 
+  first(event: MatDatepickerInputEvent<Date>) {
+    const fecha = new Date (event.value);
+    // this.filtraPorFecha(fecha);
+  }
+
+  // Aquí le doy formato a la fecha que sale del DatePicker (gracias stackoverflow)
+  traductorFechaString(fecha: Date): string {
+    // Necesito DD (sin esto de los días 1-9 obtengo '1', y necesito '01')
+    const dia = ('0' + fecha.getDate()).slice(-2);
+    // Le tengo que sumar 1 porque sino me da el mes anterior (ya sabemos cómo funcionan los arrays y su índice 0)
+    // Y el '0' es porque por ejemplo en febrero (contando el +1) me devuelve '2', y necesito el '02'
+    const mes = ('0' + (fecha.getMonth() + 1)).slice(-2);
+    const año = fecha.getFullYear();
+
+    const fechaTraducida: string = año + '-' + mes + '-' +  dia ;
+
+    return fechaTraducida;
+  }
+
+
+  sesionesDePelicula(pelicula: Pelicula, sesionesDeCine: Sesion[]): Sesion[] {
+    const sesionesDePelicula: Sesion[] = sesionesDeCine.filter(
+      estaSesion => {
+        if (estaSesion.pelicula === undefined || estaSesion.pelicula !== pelicula.id ) {
+          return false ;
+        } else {
+          return true ;
+        }
+      }
+    );
+    return sesionesDePelicula;
+  }
+
+  dameLaPelicula(idPelicula: string) {
+    let pelicula: Pelicula;
+    const subject = new Subject<Pelicula>();
+    this.servicioPelicula.getPelicula(idPelicula).subscribe(
+      (estaPelicula) => {
+        pelicula = {
+          nombre: estaPelicula.payload.get('nombre'),
+          director: estaPelicula.payload.get('director'),
+          estreno: estaPelicula.payload.get('estreno'),
+          duracion: estaPelicula.payload.get('duracion'),
+          idioma: estaPelicula.payload.get('idioma'),
+          genero: estaPelicula.payload.get('genero'),
+          sinopsis: estaPelicula.payload.get('sinopsis'),
+          imagen: estaPelicula.payload.get('imagen')
+        };
+        subject.next(pelicula);
+      }
+    );
+
+    return subject.asObservable();
+  }
+
+
+  dameElCine(idSala: string) {
+    let idCine;
+    let cine: Cine;
+    const subject = new Subject<Cine>();
+    this.servicioSala.getSala(idSala).subscribe(
+      (estaSala) => {
+        idCine = estaSala.payload.get('cine');
+        this.cineService.getCine(idCine).subscribe(
+          (esteCine) => {
+            cine = {
+              id: idCine ,
+              nombre: esteCine.payload.get('nombre'),
+              num_sala: esteCine.payload.get('num_sala'),
+              precio: esteCine.payload.get('precio'),
+              hora_inicio: esteCine.payload.get('hora_inicio'),
+              hora_fin: esteCine.payload.get('hora_fin')
+            };
+            subject.next(cine);
+          }
+        );
       }
     );
     return subject.asObservable();
   }
 
-  dameLaPortada(id: string) {
-    let portada;
-    const subject = new Subject<string>();
-    this.servicioPelicula.getPelicula(id).subscribe(
-      (estaPelicula) => {
-        portada = estaPelicula.payload.get('imagen');
-        subject.next(portada);
+  sesionesPorCine(idCine: string, sesionApp: Sesion[], peliculasApp: Pelicula[]): Map<Pelicula, Sesion[]> {
+    const mapa: Map<Pelicula, Sesion[]> = new Map<Pelicula, Sesion[]>();
+
+    const sesionesDeCine: Sesion[] = sesionApp.filter(
+      sesion => {
+        if (sesion.cine === undefined || sesion.cine.id !== idCine ) {
+          return false ;
+        } else {
+           return true;
+        }
       }
     );
-    return subject.asObservable();
+
+    peliculasApp.forEach(
+      (pelicula) => {
+        const sesionesPeliculaCine = sesionesDeCine.filter(
+          sesionCine => {
+            if (sesionCine === undefined || sesionCine.pelicula !== pelicula.id) {
+              return false;
+            } else {
+              return true;
+            }
+          }
+        );
+        if (sesionesPeliculaCine.length !== 0) {
+          mapa.set(pelicula, sesionesPeliculaCine);
+        }
+
+      }
+    );
+
+    if (mapa.size > 0) {
+      return mapa;
+    }
+
+  }
+
+  dameLaPortada(pelicula: Pelicula): string {
+    return pelicula.imagen;
+  }
+
+  dameElTitulo(pelicula: Pelicula): string {
+    return pelicula.nombre;
   }
 
 }

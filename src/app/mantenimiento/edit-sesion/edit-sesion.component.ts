@@ -116,6 +116,11 @@ export class EditSesionComponent implements OnInit {
   }
 
   onSubmit() {
+    //  Hago esto porque si al editar la sesión no cambia la fecha, formattedDate es undefined, y así me aseguro que
+    //  no me de error
+    if (this.formattedDate === undefined) {
+      this.formattedDate = String(this.sesionForm.get('fecha_sesion').value);
+    }
     const sesionNueva: Sesion = {
       sala: String(this.sesionForm.get('sala').value),
       pelicula: String(this.sesionForm.get('pelicula').value),

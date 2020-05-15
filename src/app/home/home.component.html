@@ -59,20 +59,29 @@
 
     </div>
     <div fxLayout="column" id ="peliculas">
-      <mat-card *ngFor="let sesion of sesionApp" class="cartaSesion">
-        <mat-card-header>
-          <div fxLayout="row">
-            <img mat-card-image src="{{sesion.portadaPelicula}}" class="imagenSesion">
-            <mat-card-title class="nombreSesion">{{sesion.pelicula}}</mat-card-title>
-          </div>
-        </mat-card-header>
-        <mat-divider></mat-divider>
-        <mat-card-content>
-          <time>
-            {{sesion.hora_inicio}}
-          </time>
-        </mat-card-content>
-      </mat-card>
+      <div *ngFor="let cine of cineApp">
+        <p>{{cine.nombre}}</p>
+
+        <div *ngFor="let peliculaSesiones of sesionesPorCine(cine.id,sesionApp,peliculasApp) | keyvalue">
+            <mat-card class="cartaSesion">
+              <mat-card-header>
+                <div fxLayout="row">
+                  <img mat-card-image src="{{dameLaPortada(peliculaSesiones.key)}}" class="imagenSesion">
+                  <mat-card-title class="nombreSesion"> {{dameElTitulo(peliculaSesiones.key)}} </mat-card-title>
+                </div>
+              </mat-card-header>
+              <mat-divider></mat-divider>
+              <mat-card-content>
+                <div *ngFor="let sesion of peliculaSesiones.value">
+                  <button mat-raised-button color="primary">
+                    {{sesion.hora_inicio}}
+                  </button>
+                </div>
+              </mat-card-content>
+            </mat-card>
+        </div>
+
+      </div>
     </div>
   </div>
 </div>

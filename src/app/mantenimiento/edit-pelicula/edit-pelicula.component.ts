@@ -154,6 +154,9 @@ export class EditPeliculaComponent implements OnInit {
     referencia.getDownloadURL().subscribe(
       (URL) => {
         this.URLPublica = URL;
+        if (this.formattedDate === undefined) {
+          this.formattedDate = String(this.peliculaForm.get('estreno').value);
+        }
         // Creo la película
         const peliculaEditada: Pelicula = {
           nombre: String(this.peliculaForm.get('nombre').value),
@@ -165,8 +168,6 @@ export class EditPeliculaComponent implements OnInit {
           genero: this.peliculaForm.get('genero').value,
           idioma: this.peliculaForm.get('idioma').value
         };
-
-        console.log(peliculaEditada);
 
         // Agregar pelicula
         this.servicioPelicula.updatePelicula(this.idEditado, peliculaEditada).then(
