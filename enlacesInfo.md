@@ -5,3 +5,5 @@ Crear Querys para consultar datos en firebase: `https://firebase.google.com/docs
 Relacionar MatPaginator con su MatTable: `https://stackoverflow.com/questions/48785965/angular-matpaginator-not-working`
 
 Crear Querys con GroupBy en firebase: `https://stackoverflow.com/questions/56149601/firestore-collection-group-query-on-documentid`
+
+Crear un MaterialDialog con un formulario para hacer un comentario sobre la película: `https://www.dotnettricks.com/learn/angularmaterial/dialog-component-example`

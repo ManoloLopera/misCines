@@ -1,3 +1,5 @@
+import { DatePipe } from '@angular/common';
+import { DialogComentComponent } from './componentes/dialog-coment/dialog-coment.component';
 import { AuthService } from './services/auth.service';
 import { LoginRegisterModule } from './login-register/login-register.module';
 import { MantenimientoModule } from './mantenimiento/mantenimiento.module';
@@ -9,6 +11,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeComponent } from './home/home.component';
+import { SinopsisPeliculaComponent } from './sinopsispelicula/sinopsispelicula.component';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { environment } from './../environments/environment';
@@ -24,14 +27,19 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatDialogModule } from '@angular/material/dialog';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule } from '@angular/forms';
 
 import 'firebase/firestore';
 
+
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent
+    HomeComponent,
+    SinopsisPeliculaComponent
   ],
   imports: [
     BrowserModule,
@@ -52,10 +60,15 @@ import 'firebase/firestore';
     MatMomentDateModule,
     MatDividerModule,
     MatTooltipModule,
-    FormsModule
-
+    FormsModule,
+    FontAwesomeModule,
+    MatDialogModule,
+    MatExpansionModule
   ],
-  providers: [AuthService],
+  entryComponents: [
+    DialogComentComponent
+  ],
+  providers: [AuthService, DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

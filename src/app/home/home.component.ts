@@ -18,7 +18,6 @@ import { Subject, Observable } from 'rxjs';
 })
 export class HomeComponent implements OnInit {
 
-  formattedDate: string;
   minDate: Date;
   maxDate: Date;
 
@@ -27,8 +26,11 @@ export class HomeComponent implements OnInit {
   peliculasApp: Pelicula[];
   cineApp: Cine[];
 
+  mapaCineSesiones: Map<Cine, Map<Pelicula, Sesion[]>> = new Map<Cine, Map<Pelicula, Sesion[]>>();
+
   refGenero: string;
   refCine: string;
+  fechaFiltro: Date;
 
   constructor(
     private generoService: FirestoreGeneroService,
@@ -44,17 +46,14 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.fechaFiltro = this.minDate;
+
     this.generoService.getGeneros().subscribe(
       (generos) => {
         this.generoApp = generos;
       }
     );
 
-    this.cineService.getCines().subscribe(
-      (cines) => {
-        this.cineApp = cines;
-      }
-    );
 
     this.servicioPelicula.getPeliculas().subscribe(
       (peliculas) => {
@@ -62,7 +61,7 @@ export class HomeComponent implements OnInit {
       }
     );
 
-    this.sesionService.getSesionesPorFecha(this.traductorFechaString(this.minDate)).then(
+    this.sesionService.getSesionesPorFecha(this.traductorFechaString(this.fechaFiltro)).then(
       (sesiones) => {
         this.sesionApp = sesiones.docs.map(
           sesion => {
@@ -79,6 +78,16 @@ export class HomeComponent implements OnInit {
       }
     );
 
+    this.cineService.getCines().subscribe(
+      (cines) => {
+        this.cineApp = cines;
+        this.cineApp.forEach(
+          (cine) => {
+            this.mapaCineSesiones.set(cine, this.sesionesPorCine(cine.id, this.sesionApp, this.peliculasApp));
+          }
+        );
+      }
+    );
   }
 
 
@@ -100,43 +109,6 @@ export class HomeComponent implements OnInit {
 
     return fechaTraducida;
   }
-
-
-  sesionesDePelicula(pelicula: Pelicula, sesionesDeCine: Sesion[]): Sesion[] {
-    const sesionesDePelicula: Sesion[] = sesionesDeCine.filter(
-      estaSesion => {
-        if (estaSesion.pelicula === undefined || estaSesion.pelicula !== pelicula.id ) {
-          return false ;
-        } else {
-          return true ;
-        }
-      }
-    );
-    return sesionesDePelicula;
-  }
-
-  dameLaPelicula(idPelicula: string) {
-    let pelicula: Pelicula;
-    const subject = new Subject<Pelicula>();
-    this.servicioPelicula.getPelicula(idPelicula).subscribe(
-      (estaPelicula) => {
-        pelicula = {
-          nombre: estaPelicula.payload.get('nombre'),
-          director: estaPelicula.payload.get('director'),
-          estreno: estaPelicula.payload.get('estreno'),
-          duracion: estaPelicula.payload.get('duracion'),
-          idioma: estaPelicula.payload.get('idioma'),
-          genero: estaPelicula.payload.get('genero'),
-          sinopsis: estaPelicula.payload.get('sinopsis'),
-          imagen: estaPelicula.payload.get('imagen')
-        };
-        subject.next(pelicula);
-      }
-    );
-
-    return subject.asObservable();
-  }
-
 
   dameElCine(idSala: string) {
     let idCine;
@@ -200,12 +172,8 @@ export class HomeComponent implements OnInit {
 
   }
 
-  dameLaPortada(pelicula: Pelicula): string {
-    return pelicula.imagen;
-  }
-
-  dameElTitulo(pelicula: Pelicula): string {
-    return pelicula.nombre;
+  dameNombreCine(cine: Cine): string {
+    return cine.nombre;
   }
 
 }

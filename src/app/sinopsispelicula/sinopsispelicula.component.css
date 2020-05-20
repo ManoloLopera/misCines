@@ -1,0 +1,53 @@
+img {
+  max-height: 300px;
+  max-width: 100px;
+}
+
+.example-header-image {
+  background-size: cover;
+}
+
+strong {
+  font-size: large;
+}
+
+mat-card > img {
+  margin: 1em;
+}
+
+#comentariosPelicula{
+  margin-top: 5em;
+  width: 100%;
+  background-color: rgba(128, 128, 128, 0.568);
+  padding: 2%;
+}
+
+#comentariosPelicula + b {
+  font-size: larger;
+}
+
+mat-action-row + button {
+  align-self: flex-end;
+}
+
+.example-headers-align .mat-expansion-panel-header-title,
+.example-headers-align .mat-expansion-panel-header-description {
+  flex-basis: 0;
+}
+
+.example-headers-align .mat-expansion-panel-header-description {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.example-headers-align .mat-form-field + .mat-form-field {
+  margin-left: 8px;
+}
+
+.mat-expansion-panel-body {
+  padding: 0;
+}
+
+#comentariosPelicula > b {
+  font-size: xx-large;
+}

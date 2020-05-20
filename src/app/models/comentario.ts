@@ -1,7 +1,8 @@
-import { Usuario } from './usuario';
-import { Pelicula } from './pelicula';
 export class Comentario {
   id?: string;
-  idusuario: Usuario;
-  idpelicula: Pelicula;
+  idUsuario: string;
+  idPelicula: string;
+  fechaComentario: string;
+  tituloComentario: string;
+  descripcionComentario: string;
 }

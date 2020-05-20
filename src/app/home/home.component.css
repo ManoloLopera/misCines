@@ -1,13 +1,14 @@
 #filtros {
   width: 30%;
   height: 100%;
-  background: red;
+  background: rgb(128, 123, 123);
 }
 
 #peliculas{
   width: 70%;
   height: 100%;
-  background: green;
+  /* background: rgba(158, 223, 120, 0.897); */
+  background: rgb(44, 165, 64);
 }
 
 .filtro {
@@ -38,13 +39,34 @@
 
 
 .cartaSesion mat-card-header mat-card-title {
-  font-size: 50px;
+  font-size: x-large;
   margin-top: 0.5em;
   margin-left: 3em;
+  text-align: center;
 }
 
 .cartaSesion mat-card-header .imagenSesion {
   margin-top: 1em;
   max-height: 250px;
   max-width: 125px;
+}
+
+.nombreCine {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: xx-large;
+  text-align: center;
+}
+
+div > .nombreCine {
+  background: yellow;
+}
+
+
+.horaSesion{
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: 1em;
 }

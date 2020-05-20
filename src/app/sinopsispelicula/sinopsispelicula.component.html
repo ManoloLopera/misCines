@@ -1,0 +1,64 @@
+<div id="container">
+  <mat-card class="example-card" class="cartaSinopsis">
+    <img mat-card-image src="{{peliculaDet.imagen}}" alt="Photo of a Shiba Inu">
+    <mat-card-header>
+      <!-- <div mat-card-avatar class="example-header-image"></div> -->
+      <mat-card-title>{{peliculaDet.nombre}}</mat-card-title>
+      <mat-card-subtitle>{{peliculaDet.director}}</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-divider></mat-divider>
+    <br>
+    <mat-card-content>
+      <p>
+        <strong>Duración :</strong> {{peliculaDet.duracion}} <br>
+        <strong>Género : </strong> {{dameElNombreGenero(peliculaDet.genero)}} <br>
+        <strong>Idioma : </strong> {{dameElNombreIdioma(peliculaDet.idioma)}} <br>
+        <strong>Estreno : </strong> {{peliculaDet.estreno | date:'longDate'}} <br>
+      </p>
+      <p>
+        <strong>Sinopsis :</strong> {{peliculaDet.sinopsis}}
+      </p>
+    </mat-card-content>
+  </mat-card>
+
+  <div id="comentariosPelicula">
+    <b>Comentarios: </b>
+    <br><br><br>
+    <div *ngIf="comentariosPelicula.length === 0" >
+      <p> Esta película todavia no tieni aún comentarios </p>
+      <p> ¡Sé el primero en hacer un comentario! </p>
+    </div>
+    <div *ngIf="comentariosPelicula.length !== 0">
+      <mat-accordion class="example-headers-align">
+        <mat-expansion-panel hideToggle *ngFor="let comentario of comentariosPelicula" >
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{comentario.tituloComentario}}
+            </mat-panel-title>
+            <mat-panel-description>
+              {{comentario.idUsuario}}
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <p>
+            <b>Comentario: <br></b>
+            {{comentario.descripcionComentario}}
+          </p>
+          <p>Fecha publicación: {{comentario.fechaComentario | date:'yyyy-MM-dd'}}</p>
+          <mat-action-row >
+            <button mat-button color="primary" >Comentar</button>
+          </mat-action-row>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+    <br><br><br>
+    <button mat-raised-button color="primary" (click)="openDialog()" >
+      <fa-icon [icon]="add"></fa-icon>
+    </button>
+  </div>
+  <br><br>
+  <button mat-raised-button color="accent" [routerLink]="['']">
+    <fa-icon [icon]="volver"></fa-icon>
+  </button>
+
+</div>

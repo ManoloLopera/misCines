@@ -38,3 +38,11 @@ table > ma-paginator{
 .admin {
   color: rgb(240, 165, 15)
 }
+
+.dividerVertical {
+  width: 10px;
+}
+
+.cartaSinopsis{
+  width: 100%;
+}
