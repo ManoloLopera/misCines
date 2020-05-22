@@ -1,3 +1,4 @@
+import { SinopsisComponent } from './sinopsis/sinopsis.component';
 import { DialogComentComponent } from './componentes/dialog-coment/dialog-coment.component';
 import { SinopsisPeliculaComponent } from './sinopsispelicula/sinopsispelicula.component';
 import { HomeComponent } from './home/home.component';
@@ -9,6 +10,9 @@ const routes: Routes = [
   {
     path: '',
     component: HomeComponent
+  }, {
+    path: 'sinopsis',
+    component: SinopsisComponent
   },
   {
     path: 'mantenimiento',

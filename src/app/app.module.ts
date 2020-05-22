@@ -29,17 +29,20 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatGridListModule } from '@angular/material/grid-list';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule } from '@angular/forms';
 
 import 'firebase/firestore';
+import { SinopsisComponent } from './sinopsis/sinopsis.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    SinopsisPeliculaComponent
+    SinopsisPeliculaComponent,
+    SinopsisComponent
   ],
   imports: [
     BrowserModule,
@@ -63,7 +66,8 @@ import 'firebase/firestore';
     FormsModule,
     FontAwesomeModule,
     MatDialogModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatGridListModule
   ],
   entryComponents: [
     DialogComentComponent

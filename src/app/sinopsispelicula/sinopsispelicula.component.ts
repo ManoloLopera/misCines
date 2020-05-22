@@ -133,7 +133,7 @@ export class SinopsisPeliculaComponent implements OnInit {
 
           this.servicioComentarios.addComentario(comentario).then(
             () => {
-              console.log('entro aqui');
+
               this._snackBar.open('Gracias por el comentario !', '', {
                 duration: 2000
               });

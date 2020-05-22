@@ -1,0 +1,16 @@
+<div id="container">
+  <br>
+  <p class="tituloSinopsis"> Lista de Películas</p>
+  <mat-grid-list cols="2" rowHeight="2:1" >
+      <mat-grid-tile *ngFor="let pelicula of listaPeliculas">
+        <mat-card>
+          <img mat-card-image src="{{pelicula.imagen}}">
+          <mat-card-content>
+            <a mat-button [routerLink]="['/sinopsis/', pelicula.id]" class="nombrePelicula">
+              <h3>{{pelicula.nombre}}</h3>
+            </a>
+          </mat-card-content>
+        </mat-card>
+      </mat-grid-tile>
+  </mat-grid-list>
+</div>

@@ -1,0 +1,20 @@
+mat-card {
+  width: 40%;
+  height: calc(100% - 70px);
+}
+
+mat-card > img {
+  margin: auto;
+  max-height: 250px;
+  max-width: 200px;
+}
+
+.tituloSinopsis {
+  text-align: center;
+  font-size: xx-large;
+}
+
+mat-card-content > a{
+  text-align: center;
+
+}

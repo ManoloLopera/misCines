@@ -2,6 +2,8 @@
   <mat-toolbar-row>
     <b [routerLink]="['']">MisCines</b>
     &nbsp;&nbsp;&nbsp;
+    <a mat-button [routerLink]="['sinopsis']"> <h3>Sinopsis</h3> </a>
+    &nbsp;&nbsp;&nbsp;
     <!-- Este div se imprimirá si estamos loggeados -->
     <div *ngIf="auth.user">
       <!-- Este if se imprimirá si el usuario es Admin -->
