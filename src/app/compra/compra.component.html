@@ -1,0 +1,80 @@
+<div id="container">
+  <div class="info">
+    <div class="infoSesion">
+      <p>Película: {{nombrePelicula}}</p>
+      <p>Hora Inicio: {{horaInicio}}</p>
+      <p>Hora Fin: {{horaFin}}</p>
+      <p>Cine: {{nombreCine}}</p>
+      <p>Sala Nº: {{numSala}}</p>
+    </div>
+    <div class="infoSubtotal">
+      Subtotal: {{subtotal}} €
+    </div>
+  </div>
+  <br><br><br>
+  <mat-horizontal-stepper linear>
+    <mat-step>
+        <ng-template matStepLabel>Seleccione sus entradas</ng-template>
+        <div>
+          <div class="mat-table">
+            <div class="mat-header-row">
+              <div class="mat-header-cell"> </div>
+              <div class="mat-header-cell">Cantidad</div>
+              <div class="mat-header-cell">Precio</div>
+              <div class="mat-header-cell">Subtotal</div>
+            </div>
+            <div class="mat-row">
+              <div class="mat-cell">Adulto</div>
+              <div class="mat-cell">
+                <button class="botonNEntrada" mat-mini-fab color="primary" (click)="masEntradas()" [disabled]="nEntradas === 10">+</button>
+                {{nEntradas}}
+                <button class="botonNEntrada" mat-mini-fab color="accent" (click)="menosEntradas()" [disabled]="nEntradas === 0">-</button></div>
+              <div class="mat-cell">{{precioEntradas}}</div>
+              <div class="mat-cell">{{subtotal}}</div>
+            </div>
+          </div>
+          <button mat-button matStepperNext [disabled]="nEntradas === 0" (click)="setNAsientos()">Next</button>
+        </div>
+    </mat-step>
+    <mat-step>
+        <ng-template matStepLabel>Seleccione sus asientos</ng-template>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+    </mat-step>
+    <mat-step >
+      <ng-template matStepLabel>Datos de Pago</ng-template>
+      <div>
+        <mat-form-field appearance="fill">
+          <mat-label>Número de la Tarjeta</mat-label>
+          <input matInput #numTarjeta type="text" minlength="16" maxlength="16" [(ngModel)]="nTarjeta">
+          <mat-hint align="end">{{numTarjeta.value.length}}/16</mat-hint>
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="fill">
+          <mat-label>Fecha de Caducidad</mat-label>
+          <input matInput #fechaCaducidad [matDatepicker]="dp" [formControl]="date" >
+          <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+          <mat-datepicker #dp
+                  startView="multi-year"
+                  (yearSelected)="chosenYearHandler($event)"
+                  (monthSelected)="chosenMonthHandler($event, dp)"
+                  panelClass="example-month-picker">
+          </mat-datepicker>
+        </mat-form-field>
+        <br>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext (click)="getDatosPago(fechaCaducidad.value)">Next</button>
+      </div>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Resumen</ng-template>
+      <p>Gracias por su compra</p>
+      <div>
+        <button mat-button matStepperPrevious>Volver al Inicio</button>
+      </div>
+    </mat-step>
+  </mat-horizontal-stepper>
+</div>
+

@@ -73,15 +73,16 @@
               <mat-card-content>
                 <div fxLayout="row">
                   <div *ngFor="let sesion of peliculaSesiones.value">
-                    <button mat-raised-button color="primary" class="horaSesion">
+                    <p [routerLink]="['/compra/', sesion.id]">
+                      <button mat-raised-button color="primary" class="horaSesion" >
                       {{sesion.hora_inicio}}
-                    </button>
+                      </button>
+                    </p>
                   </div>
                 </div>
               </mat-card-content>
             </mat-card>
         </div>
-
       </div>
     </div>
   </div>

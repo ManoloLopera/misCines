@@ -66,7 +66,5 @@ div > .nombreCine {
 
 
 .horaSesion{
-  margin-top: 1em;
-  margin-bottom: 1em;
-  margin-left: 1em;
+  margin: 1em;
 }

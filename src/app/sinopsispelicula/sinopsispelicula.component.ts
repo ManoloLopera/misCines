@@ -131,14 +131,14 @@ export class SinopsisPeliculaComponent implements OnInit {
             fechaComentario: this.traductorFechaString(new Date())
           };
 
+          console.log(comentario);
           this.servicioComentarios.addComentario(comentario).then(
             () => {
-
               this._snackBar.open('Gracias por el comentario !', '', {
                 duration: 2000
               });
 
-              this.router.navigate(['sinopsis/' + this.peliculaId]);
+              this.router.navigate(['sinopsis']);
             }
           );
         }

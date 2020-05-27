@@ -1,3 +1,4 @@
+import { MatTableModule } from '@angular/material/table';
 import { DatePipe } from '@angular/common';
 import { DialogComentComponent } from './componentes/dialog-coment/dialog-coment.component';
 import { AuthService } from './services/auth.service';
@@ -20,6 +21,7 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 
 import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
@@ -30,11 +32,13 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatStepperModule } from '@angular/material/stepper';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import 'firebase/firestore';
 import { SinopsisComponent } from './sinopsis/sinopsis.component';
+import { CompraComponent } from './compra/compra.component';
 
 
 @NgModule({
@@ -42,7 +46,8 @@ import { SinopsisComponent } from './sinopsis/sinopsis.component';
     AppComponent,
     HomeComponent,
     SinopsisPeliculaComponent,
-    SinopsisComponent
+    SinopsisComponent,
+    CompraComponent
   ],
   imports: [
     BrowserModule,
@@ -67,7 +72,11 @@ import { SinopsisComponent } from './sinopsis/sinopsis.component';
     FontAwesomeModule,
     MatDialogModule,
     MatExpansionModule,
-    MatGridListModule
+    MatTableModule,
+    MatGridListModule,
+    MatStepperModule,
+    MatFormFieldModule,
+    ReactiveFormsModule
   ],
   entryComponents: [
     DialogComentComponent

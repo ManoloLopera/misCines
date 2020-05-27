@@ -9,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { FirestoreSesionService } from '../services/firestore-sesion.service';
 import { Sesion } from '../models/sesion';
-import { Subject, Observable } from 'rxjs';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-home',
