@@ -38,9 +38,25 @@
     </mat-step>
     <mat-step>
         <ng-template matStepLabel>Seleccione sus asientos</ng-template>
+        <p>Has seleccionado {{selectNAsientos}} asientos</p>
+        <div class="mat-table">
+          <div class="mat-header-row">
+            <img src="./../../assets/Pantalla.png" id="pantalla">
+          </div>
+          <div class="mat-row" *ngFor="let fila of [].constructor(numFilas); let i = index">
+            <div class="mat-cell">{{i}}</div>
+            <div class="mat-cell" *ngFor="let asiento of [].constructor(asientosXFila); let j = index">
+              <button mat-button [disabled]="selectNAsientos == 0">
+                <img class="butacaVerde" id="butaca" (click)="asientoSeleccionado(i,j,$event)">
+              </button>
+            <!-- <b>{{i}},{{j}}</b> -->
+            </div>
+            <div class="mat-cell">{{i}}</div>
+          </div>
+        </div>
         <div>
           <button mat-button matStepperPrevious>Back</button>
-          <button mat-button matStepperNext>Next</button>
+          <button mat-button matStepperNext [disabled]="selectNAsientos !== 0">Next</button>
         </div>
     </mat-step>
     <mat-step >
@@ -48,7 +64,7 @@
       <div>
         <mat-form-field appearance="fill">
           <mat-label>Número de la Tarjeta</mat-label>
-          <input matInput #numTarjeta type="text" minlength="16" maxlength="16" [(ngModel)]="nTarjeta">
+          <input matInput #numTarjeta type="text" pattern="\d*" maxlength="16" [(ngModel)]="nTarjeta">
           <mat-hint align="end">{{numTarjeta.value.length}}/16</mat-hint>
         </mat-form-field>
         <br>
@@ -71,6 +87,7 @@
     <mat-step>
       <ng-template matStepLabel>Resumen</ng-template>
       <p>Gracias por su compra</p>
+      <button (click)="crearPDFEntrada()"></button>
       <div>
         <button mat-button matStepperPrevious>Volver al Inicio</button>
       </div>

@@ -13,3 +13,10 @@ Problema al importar Moment: `https://stackoverflow.com/questions/51154793/visua
 Solución mattable sin datasource `https://stackoverflow.com/questions/51188105/material-design-data-table-layout-with-static-data`
 
 Cambiar tamaño de un matbutton `https://stackoverflow.com/questions/46531743/change-size-of-mat-icon-button`
+
+Generar un PDF `https://www.ngdevelop.tech/angular-8-export-to-pdf-using-pdfmake/`
+
+Inicio con pdfMake: `http://pdfmake.org/#/gettingstarted`
+
+Clase con una imagen del proyecto: `https://stackoverflow.com/questions/47504619/relative-path-for-image-tag-not-working`
+

@@ -1,3 +1,6 @@
+import { PdfService } from './../services/pdf.service';
+import { Factura } from './../models/factura';
+import { Asiento } from './../models/asiento';
 import { AuthService } from './../services/auth.service';
 import { FirestoreSalaService } from './../services/firestore-sala.service';
 import { FirestoreCineService } from './../services/firestore-cine.service';
@@ -14,12 +17,6 @@ import * as moment from 'moment';
 import { Moment } from 'moment';
 
 const moment1 = moment;
-
-export interface Asiento {
-  filaAsiento: number;
-  columnaAsiento: number;
-}
-
 
 // See the Moment.js docs for the meaning of these formats:
 // https://momentjs.com/docs/#/displaying/format/
@@ -63,9 +60,14 @@ export class CompraComponent implements OnInit {
   horaFin: string;
   nombreCine: string;
   numSala: string;
-  maxAsientos: number;
+  aforo: number;
   selectNAsientos: number;
   columnas: string[] = [' ', 'Cantidad', 'Precio', 'Subtotal'];
+  urlImagen: string;
+  // Mapa de asientos
+  numFilas: number;
+  asientosXFila = 7;
+  asientosSeleccionados: Asiento[] = [];
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -73,7 +75,8 @@ export class CompraComponent implements OnInit {
     private servicioPelicula: FirestorePeliculaService,
     private servicioCine: FirestoreCineService,
     private servicioSala: FirestoreSalaService,
-    private auth: AuthService
+    private auth: AuthService,
+    private pdfService: PdfService
   ) { }
 
   ngOnInit(): void {
@@ -86,14 +89,15 @@ export class CompraComponent implements OnInit {
         this.servicioPelicula.getPelicula(estaSesion.payload.get('pelicula')).subscribe(
           (estaPelicula) => {
             this.nombrePelicula = estaPelicula.payload.get('nombre');
+            this.urlImagen = estaPelicula.payload.get('imagen');
           }
         );
 
         this.servicioSala.getSala(estaSesion.payload.get('sala')).subscribe(
           (estaSala) => {
             this.numSala = estaSala.payload.get('num_sala');
-            this.maxAsientos = estaSala.payload.get('aforo');
-
+            this.aforo = estaSala.payload.get('aforo');
+            this.numFilas = this.aforo / this.asientosXFila;
             this.servicioCine.getCine(estaSala.payload.get('cine')).subscribe(
               (esteCine) => {
                 this.nombreCine = esteCine.payload.get('nombre');
@@ -122,6 +126,16 @@ export class CompraComponent implements OnInit {
     this.selectNAsientos = this.nEntradas;
   }
 
+  traductorFechaString(fecha: Date): string {
+    const dia = ('0' + fecha.getDate()).slice(-2);
+    const mes = ('0' + (fecha.getMonth() + 1)).slice(-2);
+    const año = fecha.getFullYear();
+
+    const fechaTraducida: string = año + '-' + mes + '-' +  dia ;
+
+    return fechaTraducida;
+  }
+
   // MÉTODOS PARA LA SELECCIÓN DE MES Y AÑO PARA ELEGIR LA CADUCIDAD DE LA TARJETA
   // https://material.angular.io/components/datepicker/overview#watching-the-views-for-changes-on-selected-years-and-months
   chosenYearHandler(normalizedYear: Moment) {
@@ -142,5 +156,36 @@ export class CompraComponent implements OnInit {
     this.fechaCaducidad = fCaducidad;
     console.log(this.nTarjeta);
     console.log(this.fechaCaducidad);
+  }
+
+  asientoSeleccionado(fila: number, columna: number, event) {
+    const asiento: Asiento = {
+      filaAsiento: fila,
+      columnaAsiento: columna
+    };
+    if (this.selectNAsientos > 0 && event.srcElement.classList.contains('butacaVerde')) {
+      this.selectNAsientos--;
+      event.srcElement.classList.remove('butacaVerde');
+      event.srcElement.classList.add('butacaAmarilla');
+      this.asientosSeleccionados.push(asiento);
+      console.log(this.asientosSeleccionados);
+    } else if (event.srcElement.classList.contains('butacaAmarilla')) {
+      this.selectNAsientos++;
+      event.srcElement.classList.remove('butacaAmarilla');
+      event.srcElement.classList.add('butacaVerde');
+    }
+  }
+
+  crearPDFEntrada() {
+    const factura: Factura = {
+      idUsuario: this.auth.user.uid,
+      idSesion: this.idSesion,
+      fechaCompra: this.traductorFechaString(new Date()),
+      asientos: this.asientosSeleccionados,
+      numTarjeta: this.nTarjeta,
+      fechaCaducidadTarjeta: this.fechaCaducidad,
+      subtotal: Number(this.subtotal)
+    };
+    this.pdfService.generatePdf(factura, this.urlImagen, this.nombreCine);
   }
 }

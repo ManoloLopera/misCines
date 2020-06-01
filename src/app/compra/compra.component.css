@@ -24,3 +24,24 @@
   width:40px !important;
   font-size:20px !important;
 }
+
+#pantalla {
+  width: 100%;
+}
+
+#butaca{
+  width: 50%;
+  height: 50%;
+}
+
+.butacaVerde{
+  content:url('./../../assets/butacaverde.jpg');
+}
+
+.butacaAmarilla{
+  content:url('./../../assets/butacaamarilla.jpg');
+}
+
+.butacaRoja{
+  background-image: './../../assets/butacaroja.jpg';
+}

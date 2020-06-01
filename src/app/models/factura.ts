@@ -1,7 +1,9 @@
-import { Asiento } from '../compra/compra.component';
+import { Asiento } from './asiento';
+
 
 export class Factura {
   id?: string;
+  idSesion: string;
   idUsuario: string;
   fechaCompra: string;
   asientos: Asiento[];
