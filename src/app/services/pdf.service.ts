@@ -1,3 +1,4 @@
+import { FirestoreFacturaService } from './firestore-factura.service';
 import { FirestoreSalaService } from './firestore-sala.service';
 import { AuthService } from './auth.service';
 import { Observable, Subject } from 'rxjs';
@@ -19,21 +20,25 @@ export class PdfService {
   imagen: string;
   nombreCine: string;
   nombreUsuario: string;
+  idFactura: string;
   constructor(
-    private cineService: FirestoreCineService,
-    private salaService: FirestoreSalaService,
-    private peliculaService: FirestorePeliculaService,
-    private sesionService: FirestoreSesionService,
-    private auth: AuthService
+    private auth: AuthService,
+    private facturaService: FirestoreFacturaService
   ) { }
 
   generatePdf(factura: Factura, urlImagen: string, nombreCine: string) {
     this.nombreUsuario = this.auth.user.displayName;
-    const documentDefinition = this.dameElTemplate(factura,urlImagen, nombreCine);
-    pdfMake.createPdf(documentDefinition).open();
-   }
+    this.facturaService.addFactura(factura).then(
+      (facturaGuardada) => {
+        const documentDefinition = this.dameElTemplate(factura, facturaGuardada.id, nombreCine);
+        const fileName = nombreCine + '_' + factura.fechaCompra + '_' + facturaGuardada.id;
+        pdfMake.createPdf(documentDefinition).download(fileName);
+      }
+    );
 
-  private dameElTemplate(factura: Factura, urlImagen: string, nombreCine: string) {
+  }
+
+  private dameElTemplate(factura: Factura, idFactura: string, nombreCine: string) {
     const rows = [];
     rows.push(['Fila', 'Butaca']);
     // tslint:disable-next-line: prefer-for-of
@@ -42,7 +47,7 @@ export class PdfService {
         rows.push([asiento.filaAsiento, asiento.columnaAsiento]);
       }
     );
-    console.log(rows);
+    console.log(factura.id);
     return {
       content: [
         {
@@ -55,16 +60,10 @@ export class PdfService {
         {
           columns: [
             [{
-              text: 'Cine' + nombreCine,
+              text: 'Cine: ' + nombreCine,
               style: 'name'
-            },
-            // {
-            //   image: urlImagen ,
-            //   width: 75,
-            //   alignment : 'right'
-            // },
-            {
-              text: 'Fecha Compra ' + factura.fechaCompra,
+            }, {
+              text: 'Fecha Compra: ' + factura.fechaCompra,
             }
             ]
           ]
@@ -73,7 +72,9 @@ export class PdfService {
             widths: [100, 200, 200],
             body: rows
           }
-        } ],
+        }, {
+          qr: idFactura
+        }],
         styles: {
           name: {
             fontSize: 16,

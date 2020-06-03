@@ -3,7 +3,6 @@ import { FirestoreCineService } from './../../services/firestore-cine.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { Timestamp } from 'rxjs/internal/operators/timestamp';
 import { MatPaginator } from '@angular/material/paginator';
 
 @Component({

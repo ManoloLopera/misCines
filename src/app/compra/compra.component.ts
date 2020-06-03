@@ -1,3 +1,4 @@
+import { FirestoreFacturaService } from './../services/firestore-factura.service';
 import { PdfService } from './../services/pdf.service';
 import { Factura } from './../models/factura';
 import { Asiento } from './../models/asiento';
@@ -6,8 +7,9 @@ import { FirestoreSalaService } from './../services/firestore-sala.service';
 import { FirestoreCineService } from './../services/firestore-cine.service';
 import { FirestorePeliculaService } from './../services/firestore-pelicula.service';
 import { FirestoreSesionService } from './../services/firestore-sesion.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
+import { faFile} from '@fortawesome/free-solid-svg-icons';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 
@@ -68,15 +70,19 @@ export class CompraComponent implements OnInit {
   numFilas: number;
   asientosXFila = 7;
   asientosSeleccionados: Asiento[] = [];
+  facturasDeSesion: Factura[];
+  arrays = [];
+  asientosOcupados: Asiento[] = [];
+  iconoFactura = faFile ;
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
     private servicioSesion: FirestoreSesionService,
     private servicioPelicula: FirestorePeliculaService,
     private servicioCine: FirestoreCineService,
     private servicioSala: FirestoreSalaService,
     private auth: AuthService,
-    private pdfService: PdfService
+    private pdfService: PdfService,
+    private facturaService: FirestoreFacturaService
   ) { }
 
   ngOnInit(): void {
@@ -85,6 +91,24 @@ export class CompraComponent implements OnInit {
       (estaSesion) => {
         this.horaInicio = estaSesion.payload.get('hora_inicio');
         this.horaFin = estaSesion.payload.get('hora_fin');
+
+        this.facturaService.getFacturasPorSesion(this.idSesion).then(
+          (facturas) => {
+            this.facturasDeSesion = facturas.docs.map(
+              (factura) => {
+                const data = factura.data() as Factura;
+                data.id = factura.id;
+                return data;
+              }
+            );
+            this.facturasDeSesion.forEach(
+              factura => {
+                this.arrays.push(factura.asientos);
+              }
+            );
+            this.asientosOcupados = [].concat.apply([], this.arrays);
+          }
+        );
 
         this.servicioPelicula.getPelicula(estaSesion.payload.get('pelicula')).subscribe(
           (estaPelicula) => {
@@ -149,13 +173,10 @@ export class CompraComponent implements OnInit {
     ctrlValue.month(normalizedMonth.month());
     this.date.setValue(ctrlValue);
     datepicker.close();
-    console.log(this.date.value);
   }
 
   getDatosPago(fCaducidad: string) {
     this.fechaCaducidad = fCaducidad;
-    console.log(this.nTarjeta);
-    console.log(this.fechaCaducidad);
   }
 
   asientoSeleccionado(fila: number, columna: number, event) {
@@ -168,9 +189,10 @@ export class CompraComponent implements OnInit {
       event.srcElement.classList.remove('butacaVerde');
       event.srcElement.classList.add('butacaAmarilla');
       this.asientosSeleccionados.push(asiento);
-      console.log(this.asientosSeleccionados);
     } else if (event.srcElement.classList.contains('butacaAmarilla')) {
       this.selectNAsientos++;
+      const index = this.asientosSeleccionados.indexOf(asiento);
+      this.asientosSeleccionados.splice(index, 1);
       event.srcElement.classList.remove('butacaAmarilla');
       event.srcElement.classList.add('butacaVerde');
     }
@@ -187,5 +209,25 @@ export class CompraComponent implements OnInit {
       subtotal: Number(this.subtotal)
     };
     this.pdfService.generatePdf(factura, this.urlImagen, this.nombreCine);
+  }
+
+  estaOcupado(fila: number, butaca: number): boolean {
+    let ocupado = false;
+    const asiento: Asiento = {
+      filaAsiento: fila,
+      columnaAsiento: butaca
+    };
+
+    // tslint:disable-next-line: prefer-for-of
+    for (let i = 0; i < this.asientosOcupados.length; i++) {
+      // tslint:disable-next-line: max-line-length
+      if (this.asientosOcupados[i].filaAsiento === asiento.filaAsiento && this.asientosOcupados[i].columnaAsiento === asiento.columnaAsiento) {
+        ocupado = true;
+        break;
+      }
+    }
+
+
+    return ocupado;
   }
 }

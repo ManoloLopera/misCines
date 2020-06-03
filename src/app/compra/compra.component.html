@@ -46,10 +46,19 @@
           <div class="mat-row" *ngFor="let fila of [].constructor(numFilas); let i = index">
             <div class="mat-cell">{{i}}</div>
             <div class="mat-cell" *ngFor="let asiento of [].constructor(asientosXFila); let j = index">
-              <button mat-button [disabled]="selectNAsientos == 0">
-                <img class="butacaVerde" id="butaca" (click)="asientoSeleccionado(i,j,$event)">
-              </button>
-            <!-- <b>{{i}},{{j}}</b> -->
+              <ng-template *ngIf="estaOcupado(i,j); then siEstaOcupado else noEstaOcupado" >
+              </ng-template>
+              <ng-template #siEstaOcupado>
+                <button mat-button disabled>
+                  <img class="butacaRoja" id="butaca">
+                </button>
+              </ng-template>
+              <ng-template #noEstaOcupado>
+                <button mat-button [disabled]="selectNAsientos == 0">
+                  <img class="butacaVerde" id="butaca" (click)="asientoSeleccionado(i,j,$event)">
+                </button>
+              </ng-template>
+
             </div>
             <div class="mat-cell">{{i}}</div>
           </div>
@@ -87,9 +96,11 @@
     <mat-step>
       <ng-template matStepLabel>Resumen</ng-template>
       <p>Gracias por su compra</p>
-      <button (click)="crearPDFEntrada()"></button>
+      <button mat-raised-button color="warn" (click)="crearPDFEntrada()"  [routerLink]="['']">
+        <fa-icon [icon]="iconoFactura"></fa-icon>
+      </button>
       <div>
-        <button mat-button matStepperPrevious>Volver al Inicio</button>
+        <button mat-button matStepperPrevious >Volver al Inicio</button>
       </div>
     </mat-step>
   </mat-horizontal-stepper>

@@ -43,5 +43,5 @@
 }
 
 .butacaRoja{
-  background-image: './../../assets/butacaroja.jpg';
+  content:url('./../../assets/butacaroja.jpg');
 }

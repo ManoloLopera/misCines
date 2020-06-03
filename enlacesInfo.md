@@ -20,3 +20,4 @@ Inicio con pdfMake: `http://pdfmake.org/#/gettingstarted`
 
 Clase con una imagen del proyecto: `https://stackoverflow.com/questions/47504619/relative-path-for-image-tag-not-working`
 
+Generar código QR con pdfmake : `https://pdfmake.github.io/docs/document-definition-object/qr/`

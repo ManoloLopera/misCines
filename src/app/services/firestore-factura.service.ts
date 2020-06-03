@@ -38,4 +38,11 @@ export class FirestoreFacturaService {
   updateFactura(id: string, factura: Factura) {
     return this.database.collection('factura').doc(id).set(factura);
   }
+
+  getFacturasPorSesion(idSesion: string) {
+    const refPeliculas = this.database.collection<Factura>('factura').ref;
+    const query = refPeliculas.where('idSesion', '==', idSesion);
+
+    return query.get();
+  }
 }
