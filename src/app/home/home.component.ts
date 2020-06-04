@@ -21,7 +21,6 @@ export class HomeComponent implements OnInit {
   minDate: Date;
   maxDate: Date;
 
-  generoApp: Genero[];
   sesionApp: Sesion[];
   peliculasApp: Pelicula[];
   cineApp: Cine[];
@@ -29,11 +28,9 @@ export class HomeComponent implements OnInit {
   mapaCineSesiones: Map<Cine, Map<Pelicula, Sesion[]>> = new Map<Cine, Map<Pelicula, Sesion[]>>();
 
   refGenero: string;
-  refCine: string;
   fechaFiltro: Date;
 
   constructor(
-    private generoService: FirestoreGeneroService,
     private sesionService: FirestoreSesionService,
     private cineService: FirestoreCineService,
     private servicioPelicula: FirestorePeliculaService,
@@ -47,13 +44,6 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.fechaFiltro = this.minDate;
-
-    this.generoService.getGeneros().subscribe(
-      (generos) => {
-        this.generoApp = generos;
-      }
-    );
-
 
     this.servicioPelicula.getPeliculas().subscribe(
       (peliculas) => {
@@ -91,9 +81,31 @@ export class HomeComponent implements OnInit {
   }
 
 
-  first(event: MatDatepickerInputEvent<Date>) {
+  filtroFecha(event: MatDatepickerInputEvent<Date>) {
     const fecha = new Date (event.value);
-    // this.filtraPorFecha(fecha);
+    const fechaString: string = this.traductorFechaString(fecha);
+    this.sesionService.getSesionesPorFecha(fechaString).then(
+      (sesiones) => {
+        this.sesionApp = sesiones.docs.map(
+          sesion => {
+            const data = sesion.data() as Sesion;
+            this.dameElCine(data.sala).subscribe(
+              (esteCine) => {
+                data.cine = esteCine;
+              }
+            );
+            data.id = sesion.id;
+            return data;
+          }
+        );
+      }
+    );
+  }
+
+  filtroCine(cineSeleccionado: Cine) {
+    console.log('estoy aquiiiiiiiiaaaaaaa');
+    this.mapaCineSesiones.clear();
+    this.mapaCineSesiones.set(cineSeleccionado, this.sesionesPorCine(cineSeleccionado.id, this.sesionApp, this.peliculasApp));
   }
 
   // Aquí le doy formato a la fecha que sale del DatePicker (gracias stackoverflow)
