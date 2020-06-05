@@ -1,3 +1,4 @@
+import { FacturasUsuarioComponent } from './facturas-usuario/facturas-usuario.component';
 import { CompraComponent } from './compra/compra.component';
 import { SinopsisComponent } from './sinopsis/sinopsis.component';
 import { DialogComentComponent } from './componentes/dialog-coment/dialog-coment.component';
@@ -21,6 +22,9 @@ const routes: Routes = [
   }, {
     path: 'compra/:id',
     component: CompraComponent
+  }, {
+    path: 'facturas/:id',
+    component: FacturasUsuarioComponent
   }, {
     path: 'sinopsis/:id',
     component: SinopsisPeliculaComponent,

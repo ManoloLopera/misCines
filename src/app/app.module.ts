@@ -33,12 +33,14 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatStepperModule } from '@angular/material/stepper';
+import { MatListModule } from '@angular/material/list';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import 'firebase/firestore';
 import { SinopsisComponent } from './sinopsis/sinopsis.component';
 import { CompraComponent } from './compra/compra.component';
+import { FacturasUsuarioComponent } from './facturas-usuario/facturas-usuario.component';
 
 
 @NgModule({
@@ -47,7 +49,8 @@ import { CompraComponent } from './compra/compra.component';
     HomeComponent,
     SinopsisPeliculaComponent,
     SinopsisComponent,
-    CompraComponent
+    CompraComponent,
+    FacturasUsuarioComponent
   ],
   imports: [
     BrowserModule,
@@ -76,6 +79,7 @@ import { CompraComponent } from './compra/compra.component';
     MatGridListModule,
     MatStepperModule,
     MatFormFieldModule,
+    MatListModule,
     ReactiveFormsModule
   ],
   entryComponents: [

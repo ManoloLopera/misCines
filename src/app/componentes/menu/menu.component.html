@@ -10,11 +10,15 @@
       <div *ngIf="role == 'Admin'" >
         <a mat-button [matMenuTriggerFor]="entidades"> <h3>Mantenimiento</h3> </a>
         &nbsp;&nbsp;&nbsp;
+        <a mat-button [routerLink]="['facturas/', auth.user.uid]"> <h3>Facturas</h3> </a>
+        &nbsp;&nbsp;&nbsp;
         <a class="admin" >{{auth.user.displayName}}  <fa-icon [icon]="verified" class="admin"></fa-icon></a>
         &nbsp;&nbsp;&nbsp;
         <fa-icon mat-button (click)="logout()" [icon]="exit"></fa-icon>
       </div>
       <div *ngIf="role == 'User'">
+        <a mat-button [routerLink]="['facturas/', auth.user.uid]"> <h3>Facturas</h3> </a>
+        &nbsp;&nbsp;&nbsp;
         <a>{{auth.user.displayName}}</a>
         &nbsp;&nbsp;&nbsp;
         <fa-icon mat-button (click)="logout()" [icon]="exit"></fa-icon>

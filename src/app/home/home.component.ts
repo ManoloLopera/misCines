@@ -103,7 +103,6 @@ export class HomeComponent implements OnInit {
   }
 
   filtroCine(cineSeleccionado: Cine) {
-    console.log('estoy aquiiiiiiiiaaaaaaa');
     this.mapaCineSesiones.clear();
     this.mapaCineSesiones.set(cineSeleccionado, this.sesionesPorCine(cineSeleccionado.id, this.sesionApp, this.peliculasApp));
   }

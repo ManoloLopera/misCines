@@ -1,0 +1,13 @@
+<div id="container">
+  <mat-list>
+    <div mat-subheader>Facturas</div>
+    <mat-list-item *ngFor="let factura of facturasUsuario">
+      <div mat-line>
+        {{factura.fileName}}.pdf
+        <button mat-flat-button (click)="openPDF(factura.id, factura.nombreCine)">
+          <fa-icon [icon]="fileIcon"></fa-icon>
+        </button>
+      </div>
+    </mat-list-item>
+  </mat-list>
+</div>

@@ -208,7 +208,7 @@ export class CompraComponent implements OnInit {
       fechaCaducidadTarjeta: this.fechaCaducidad,
       subtotal: Number(this.subtotal)
     };
-    this.pdfService.generatePdf(factura, this.urlImagen, this.nombreCine);
+    this.pdfService.generatePdf(factura, this.nombreCine);
   }
 
   estaOcupado(fila: number, butaca: number): boolean {

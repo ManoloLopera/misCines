@@ -26,7 +26,7 @@ export class PdfService {
     private facturaService: FirestoreFacturaService
   ) { }
 
-  generatePdf(factura: Factura, urlImagen: string, nombreCine: string) {
+  generatePdf(factura: Factura, nombreCine: string) {
     this.nombreUsuario = this.auth.user.displayName;
     this.facturaService.addFactura(factura).then(
       (facturaGuardada) => {
@@ -35,7 +35,27 @@ export class PdfService {
         pdfMake.createPdf(documentDefinition).download(fileName);
       }
     );
+  }
 
+  openPdf(idFactura: string, nombreCine: string) {
+    let estaFactura: Factura;
+    this.nombreUsuario = this.auth.user.displayName;
+    this.facturaService.getFactura(idFactura).subscribe(
+      (factura) => {
+        estaFactura = {
+          id: factura.payload.id,
+          idSesion: factura.payload.get('idSesion'),
+          idUsuario: factura.payload.get('idUsuario'),
+          fechaCaducidadTarjeta: factura.payload.get('fechaCaducidadTarjeta'),
+          asientos: factura.payload.get('asientos'),
+          fechaCompra: factura.payload.get('fechaCompra'),
+          subtotal: factura.payload.get('subtotal'),
+          numTarjeta: factura.payload.get('numTarjeta')
+        };
+        const documentDefinition = this.dameElTemplate(estaFactura, estaFactura.id, nombreCine);
+        pdfMake.createPdf(documentDefinition).open();
+      }
+    );
   }
 
   private dameElTemplate(factura: Factura, idFactura: string, nombreCine: string) {

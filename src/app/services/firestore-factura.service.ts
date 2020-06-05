@@ -40,8 +40,15 @@ export class FirestoreFacturaService {
   }
 
   getFacturasPorSesion(idSesion: string) {
-    const refPeliculas = this.database.collection<Factura>('factura').ref;
-    const query = refPeliculas.where('idSesion', '==', idSesion);
+    const refFacturas = this.database.collection<Factura>('factura').ref;
+    const query = refFacturas.where('idSesion', '==', idSesion);
+
+    return query.get();
+  }
+
+  getFacturasDeUsuario(idUsuario: string) {
+    const refFacturas = this.database.collection<Factura>('factura').ref;
+    const query = refFacturas.where('idUsuario', '==', idUsuario);
 
     return query.get();
   }

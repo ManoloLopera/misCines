@@ -10,4 +10,6 @@ export class Factura {
   numTarjeta: string;
   fechaCaducidadTarjeta: string;
   subtotal: number;
+  fileName?: string;
+  nombreCine?: string;
 }
