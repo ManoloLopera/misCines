@@ -1,3 +1,5 @@
+import { Subject } from 'rxjs';
+import { FirestoreIdiomaService } from './../services/firestore-idioma.service';
 import { FirestoreSalaService } from './../services/firestore-sala.service';
 import { Cine } from './../models/cine';
 import { FirestoreCineService } from './../services/firestore-cine.service';
@@ -9,7 +11,6 @@ import { Component, OnInit } from '@angular/core';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { FirestoreSesionService } from '../services/firestore-sesion.service';
 import { Sesion } from '../models/sesion';
-import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -34,7 +35,7 @@ export class HomeComponent implements OnInit {
     private sesionService: FirestoreSesionService,
     private cineService: FirestoreCineService,
     private servicioPelicula: FirestorePeliculaService,
-    private servicioSala: FirestoreSalaService
+    private servicioIdioma: FirestoreIdiomaService
     ) {
     // Current Date
     this.minDate = new Date();
@@ -56,11 +57,6 @@ export class HomeComponent implements OnInit {
         this.sesionApp = sesiones.docs.map(
           sesion => {
             const data = sesion.data() as Sesion;
-            this.dameElCine(data.sala).subscribe(
-              (esteCine) => {
-                data.cine = esteCine;
-              }
-            );
             data.id = sesion.id;
             return data;
           }
@@ -73,7 +69,9 @@ export class HomeComponent implements OnInit {
         this.cineApp = cines;
         this.cineApp.forEach(
           (cine) => {
-            this.mapaCineSesiones.set(cine, this.sesionesPorCine(cine.id, this.sesionApp, this.peliculasApp));
+            if (this.sesionesPorCine(cine.id, this.sesionApp, this.peliculasApp) !== undefined) {
+              this.mapaCineSesiones.set(cine, this.sesionesPorCine(cine.id, this.sesionApp, this.peliculasApp) );
+            }
           }
         );
       }
@@ -89,22 +87,50 @@ export class HomeComponent implements OnInit {
         this.sesionApp = sesiones.docs.map(
           sesion => {
             const data = sesion.data() as Sesion;
-            this.dameElCine(data.sala).subscribe(
-              (esteCine) => {
-                data.cine = esteCine;
-              }
-            );
             data.id = sesion.id;
             return data;
+          }
+        );
+        this.mapaCineSesiones.clear();
+        this.cineApp.forEach(
+          (cine) => {
+            if (this.sesionesPorCine(cine.id, this.sesionApp, this.peliculasApp) !== undefined) {
+              this.mapaCineSesiones.set(cine, this.sesionesPorCine(cine.id, this.sesionApp, this.peliculasApp) );
+            }
           }
         );
       }
     );
   }
 
-  filtroCine(cineSeleccionado: Cine) {
-    this.mapaCineSesiones.clear();
-    this.mapaCineSesiones.set(cineSeleccionado, this.sesionesPorCine(cineSeleccionado.id, this.sesionApp, this.peliculasApp));
+  imagenIdioma(pelicula: Pelicula) {
+    let url;
+    const subject = new Subject<string>();
+
+    this.servicioIdioma.getIdioma(pelicula.idioma).subscribe(
+      (idioma) => {
+        url = idioma.payload.get('imagen');
+        subject.next(url);
+      }
+    );
+
+
+    return subject.asObservable();
+  }
+
+  filtroCine(cineSeleccionado) {
+    if (cineSeleccionado === 'todos') {
+      this.cineApp.forEach(
+        (cine) => {
+          if (this.sesionesPorCine(cine.id, this.sesionApp, this.peliculasApp) !== undefined) {
+            this.mapaCineSesiones.set(cine, this.sesionesPorCine(cine.id, this.sesionApp, this.peliculasApp) );
+          }
+        }
+      );
+    } else {
+      this.mapaCineSesiones.clear();
+      this.mapaCineSesiones.set(cineSeleccionado, this.sesionesPorCine(cineSeleccionado.id, this.sesionApp, this.peliculasApp));
+    }
   }
 
   // Aquí le doy formato a la fecha que sale del DatePicker (gracias stackoverflow)
@@ -119,31 +145,6 @@ export class HomeComponent implements OnInit {
     const fechaTraducida: string = año + '-' + mes + '-' +  dia ;
 
     return fechaTraducida;
-  }
-
-  dameElCine(idSala: string) {
-    let idCine;
-    let cine: Cine;
-    const subject = new Subject<Cine>();
-    this.servicioSala.getSala(idSala).subscribe(
-      (estaSala) => {
-        idCine = estaSala.payload.get('cine');
-        this.cineService.getCine(idCine).subscribe(
-          (esteCine) => {
-            cine = {
-              id: idCine ,
-              nombre: esteCine.payload.get('nombre'),
-              num_sala: esteCine.payload.get('num_sala'),
-              precio: esteCine.payload.get('precio'),
-              hora_inicio: esteCine.payload.get('hora_inicio'),
-              hora_fin: esteCine.payload.get('hora_fin')
-            };
-            subject.next(cine);
-          }
-        );
-      }
-    );
-    return subject.asObservable();
   }
 
   sesionesPorCine(idCine: string, sesionApp: Sesion[], peliculasApp: Pelicula[]): Map<Pelicula, Sesion[]> {
@@ -185,6 +186,10 @@ export class HomeComponent implements OnInit {
 
   dameNombreCine(cine: Cine): string {
     return cine.nombre;
+  }
+
+  log(val) {
+    console.log(val);
   }
 
 }

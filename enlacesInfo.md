@@ -21,3 +21,9 @@ Inicio con pdfMake: `http://pdfmake.org/#/gettingstarted`
 Clase con una imagen del proyecto: `https://stackoverflow.com/questions/47504619/relative-path-for-image-tag-not-working`
 
 Generar código QR con pdfmake : `https://pdfmake.github.io/docs/document-definition-object/qr/`
+
+Generador textbox css `http://doodlenerd.com/html-control/css-textbox-generator`
+
+Generador button css `https://www.cssgenerators.net/`
+
+String solo números `https://stackoverflow.com/questions/1779013/check-if-string-contains-only-digits`

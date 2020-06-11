@@ -5,6 +5,6 @@ export class Sesion {
     fecha_sesion: string;
     pelicula: string;
     sala: string;
-    cine?: Cine;
+    cine: Cine;
     id?: string;
 }

@@ -9,9 +9,9 @@
           <mat-divider></mat-divider>
           <br>
           <mat-card-content>
-            <mat-select (selectionChange)="filtroCine($event.value)" matTooltip='Filtra por cine'>
-              <mat-option [value]="">None</mat-option>
-              <mat-option *ngFor="let cine of cineApp" [value]="cine.id">
+            <mat-select (selectionChange)="filtroCine($event.value)" [value]="'todos'" atTooltip='Filtra por cine'>
+              <mat-option [value]="'todos'">Todos</mat-option>
+              <mat-option *ngFor="let cine of cineApp" [value]="cine">
                 {{cine.nombre}}
               </mat-option>
             </mat-select>
@@ -39,25 +39,23 @@
 
     </div>
     <div fxLayout="column" id="peliculas">
-      <div *ngFor="let cine of cineApp">
-        <p class="nombreCine">{{cine.nombre}}</p>
-        <div *ngFor="let peliculaSesiones of sesionesPorCine(cine.id,sesionApp,peliculasApp) | keyvalue">
+      <div *ngFor="let cineSesiones of mapaCineSesiones | keyvalue">
+        <p class="nombreCine">{{cineSesiones.key.nombre}}</p>
+        <div *ngFor="let peliculaSesiones of cineSesiones.value | keyvalue">
             <mat-card class="cartaSesion">
               <mat-card-header>
                 <div fxLayout="row">
                   <img mat-card-image src="{{peliculaSesiones.key.imagen}}" class="imagenSesion">
-                  <mat-card-title class="nombreSesion" [routerLink]="['/sinopsis/', peliculaSesiones.key.id]"> {{peliculaSesiones.key.nombre}} </mat-card-title>
+                  <mat-card-title class="nombreSesion" [routerLink]="['/sinopsis/', peliculaSesiones.key.id]"> {{peliculaSesiones.key.nombre}}</mat-card-title>
                 </div>
               </mat-card-header>
               <mat-divider></mat-divider>
               <mat-card-content>
                 <div fxLayout="row">
                   <div *ngFor="let sesion of peliculaSesiones.value">
-                    <p [routerLink]="['/compra/', sesion.id]">
-                      <button mat-raised-button color="primary" class="horaSesion" >
+                    <a class="horaSesion" [routerLink]="['/compra/', sesion.id]">
                       {{sesion.hora_inicio}}
-                      </button>
-                    </p>
+                    </a>
                   </div>
                 </div>
               </mat-card-content>

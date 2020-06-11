@@ -21,10 +21,12 @@ const routes: Routes = [
     loadChildren: './../app/mantenimiento/mantenimiento.module#MantenimientoModule'
   }, {
     path: 'compra/:id',
-    component: CompraComponent
+    component: CompraComponent,
+    canActivate: [AuthGuardService]
   }, {
     path: 'facturas/:id',
-    component: FacturasUsuarioComponent
+    component: FacturasUsuarioComponent,
+    canActivate: [AuthGuardService]
   }, {
     path: 'sinopsis/:id',
     component: SinopsisPeliculaComponent,

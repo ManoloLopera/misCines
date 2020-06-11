@@ -74,31 +74,44 @@ export class EditIdiomaComponent implements OnInit {
 
   onSubmit() {
     const archivo = this.datosFormulario.get('archivo');
-    const referencia = this.firestorage.referenceCloudStorage(this.nombreArchivo);
-    const tarea = this.firestorage.cloudStorage(this.nombreArchivo, archivo);
-    // Cambia el porcentaje
-    tarea.percentageChanges().subscribe((porcentaje) => {
-      this.porcentaje = Math.round(porcentaje);
-      if (this.porcentaje === 100) {
-        this.finalizado = true;
-      }
-    });
+    if (this.nombreArchivo === '') {
+      const idiomaEditado: Idioma = {
+        nombre: String(this.idiomaForm.get('nombre').value),
+        imagen: this.URLPublica
+      };
 
-    referencia.getDownloadURL().subscribe(
-      (URL) => {
-        this.URLPublica = URL;
-        // Creo el idioma
-        const idiomaEditado: Idioma = {
-          nombre: String(this.idiomaForm.get('nombre').value),
-          imagen: this.URLPublica
-        };
+      // Agregar idioma
+      this.servicio.updateIdioma(this.idEditado, idiomaEditado).then(
+        () => this.router.navigate(['idioma'])
+      );
+    } else {
+      const referencia = this.firestorage.referenceCloudStorage(this.nombreArchivo);
+      const tarea = this.firestorage.cloudStorage(this.nombreArchivo, archivo);
+      // Cambia el porcentaje
+      tarea.percentageChanges().subscribe((porcentaje) => {
+        this.porcentaje = Math.round(porcentaje);
+        if (this.porcentaje === 100) {
+          this.finalizado = true;
+        }
+      });
 
-        // Agregar idioma
-        this.servicio.updateIdioma(this.idEditado, idiomaEditado).then(
-          () => this.router.navigate(['idioma'])
-        );
-      }
-    );
+      referencia.getDownloadURL().subscribe(
+        (URL) => {
+          this.URLPublica = URL;
+          // Creo el idioma
+          const idiomaEditado: Idioma = {
+            nombre: String(this.idiomaForm.get('nombre').value),
+            imagen: this.URLPublica
+          };
+
+          // Agregar idioma
+          this.servicio.updateIdioma(this.idEditado, idiomaEditado).then(
+            () => this.router.navigate(['idioma'])
+          );
+        }
+      );
+    }
+
 
   }
 

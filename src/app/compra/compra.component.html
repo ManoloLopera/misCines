@@ -1,43 +1,61 @@
 <div id="container">
-  <div class="info">
-    <div class="infoSesion">
-      <p>Película: {{nombrePelicula}}</p>
-      <p>Hora Inicio: {{horaInicio}}</p>
-      <p>Hora Fin: {{horaFin}}</p>
-      <p>Cine: {{nombreCine}}</p>
-      <p>Sala Nº: {{numSala}}</p>
-    </div>
-    <div class="infoSubtotal">
-      Subtotal: {{subtotal}} €
-    </div>
-  </div>
-  <br><br><br>
+  <mat-grid-list cols="3"  [gutterSize]="'100px'">
+    <mat-grid-tile [colspan]="2" [rowspan]="1" class="cajaInfoSesion" >
+      <div class="infoSesion">
+        <a>Película: {{nombrePelicula}}</a><br>
+        <a>Hora Inicio: {{horaInicio}}</a><br>
+        <a>Hora Fin: {{horaFin}}</a><br>
+        <a>Cine: {{nombreCine}}</a><br>
+        <a>Sala Nº: {{numSala}}</a><br>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="1" [rowspan]="1" class="cajaInfoSubtotal">
+      <div class="infoSubtotal">
+        <div class="titulo">
+          Subtotal
+        </div>
+        <div class="subtotal">
+          {{subtotal}} €
+        </div>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <br><br>
   <mat-horizontal-stepper linear>
     <mat-step>
-        <ng-template matStepLabel>Seleccione sus entradas</ng-template>
-        <div>
-          <div class="mat-table">
-            <div class="mat-header-row">
-              <div class="mat-header-cell"> </div>
-              <div class="mat-header-cell">Cantidad</div>
-              <div class="mat-header-cell">Precio</div>
-              <div class="mat-header-cell">Subtotal</div>
-            </div>
-            <div class="mat-row">
-              <div class="mat-cell">Adulto</div>
-              <div class="mat-cell">
-                <button class="botonNEntrada" mat-mini-fab color="primary" (click)="masEntradas()" [disabled]="nEntradas === 10">+</button>
-                {{nEntradas}}
-                <button class="botonNEntrada" mat-mini-fab color="accent" (click)="menosEntradas()" [disabled]="nEntradas === 0">-</button></div>
-              <div class="mat-cell">{{precioEntradas}}</div>
-              <div class="mat-cell">{{subtotal}}</div>
-            </div>
+      <ng-template matStepLabel>Seleccione sus entradas</ng-template>
+      <div>
+        <div class="mat-table">
+          <div class="mat-header-row">
+            <div class="mat-header-cell"> </div>
+            <div class="mat-header-cell">Cantidad</div>
+            <div class="mat-header-cell">Precio</div>
+            <div class="mat-header-cell">Subtotal</div>
           </div>
-          <button mat-button matStepperNext [disabled]="nEntradas === 0" (click)="setNAsientos()">Next</button>
+          <div class="mat-row">
+            <div class="mat-cell" >Adulto</div>
+            <div class="mat-cell">
+              <button class="botonNEntrada" mat-mini-fab color="primary" (click)="masEntradasAdulto()" [disabled]="nEntradasAdulto + nEntradasJoven === 10">+</button>
+                {{nEntradasAdulto}}
+              <button class="botonNEntrada" mat-mini-fab color="accent" (click)="menosEntradasAdulto()" [disabled]="nEntradasAdulto === 0">-</button></div>
+            <div class="mat-cell">{{precioEntradasAdulto}}</div>
+            <div class="mat-cell">{{subtotalAdulto}}</div>
+          </div>
+          <div class="mat-row">
+            <div class="mat-cell">Joven</div>
+            <div class="mat-cell">
+              <button class="botonNEntrada" mat-mini-fab color="primary" (click)="masEntradasJoven()" [disabled]="nEntradasAdulto + nEntradasJoven === 10">+</button>
+                {{nEntradasJoven}}
+              <button class="botonNEntrada" mat-mini-fab color="accent" (click)="menosEntradasJoven()" [disabled]="nEntradasJoven === 0">-</button></div>
+            <div class="mat-cell">{{precioEntradasJoven}}</div>
+            <div class="mat-cell">{{subtotalJoven}}</div>
+          </div>
         </div>
+        <button mat-button matStepperNext [disabled]="nEntradasAdulto === 0" (click)="setNAsientos()">Next</button>
+      </div>
     </mat-step>
     <mat-step>
-        <ng-template matStepLabel>Seleccione sus asientos</ng-template>
+      <ng-template matStepLabel>Seleccione sus asientos</ng-template>
         <p>Has seleccionado {{selectNAsientos}} asientos</p>
         <div class="mat-table">
           <div class="mat-header-row">
@@ -58,7 +76,6 @@
                   <img class="butacaVerde" id="butaca" (click)="asientoSeleccionado(i,j,$event)">
                 </button>
               </ng-template>
-
             </div>
             <div class="mat-cell">{{i}}</div>
           </div>
@@ -90,7 +107,7 @@
         </mat-form-field>
         <br>
         <button mat-button matStepperPrevious>Back</button>
-        <button mat-button matStepperNext (click)="getDatosPago(fechaCaducidad.value)">Next</button>
+        <button mat-button matStepperNext [disabled]="tarjetaValida(numTarjeta.value)" (click)="getDatosPago(fechaCaducidad.value)">Next</button>
       </div>
     </mat-step>
     <mat-step>

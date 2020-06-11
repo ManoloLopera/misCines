@@ -52,9 +52,13 @@ export class CompraComponent implements OnInit {
 
   date = new FormControl(moment1());
   idSesion;
-  nEntradas = 0;
+  nEntradasAdulto = 0;
+  nEntradasJoven = 0;
+  subtotalAdulto = 0;
+  subtotalJoven = 0;
   subtotal = 0;
-  precioEntradas: number;
+  precioEntradasAdulto: number;
+  precioEntradasJoven: number;
   nTarjeta: string;
   fechaCaducidad: string;
   nombrePelicula: string;
@@ -125,7 +129,8 @@ export class CompraComponent implements OnInit {
             this.servicioCine.getCine(estaSala.payload.get('cine')).subscribe(
               (esteCine) => {
                 this.nombreCine = esteCine.payload.get('nombre');
-                this.precioEntradas = esteCine.payload.get('precio');
+                this.precioEntradasAdulto = esteCine.payload.get('precio');
+                this.precioEntradasJoven = this.damePrecioJoven(this.precioEntradasAdulto);
               }
             );
           }
@@ -134,20 +139,44 @@ export class CompraComponent implements OnInit {
     );
   }
 
-  masEntradas() {
-    this.nEntradas ++;
-
-    this.subtotal = this.nEntradas * this.precioEntradas;
+  damePrecioJoven(precioAdulto: number): number {
+    return Math.round((precioAdulto * 0.7) * 100 ) / 100;
   }
 
-  menosEntradas() {
-    this.nEntradas --;
+  masEntradasAdulto() {
+    this.nEntradasAdulto ++;
 
-    this.subtotal = this.nEntradas * this.precioEntradas;
+    this.subtotalAdulto = Math.round((this.nEntradasAdulto * this.precioEntradasAdulto) * 100) / 100;
+
+    this.subtotal = Math.round((this.subtotalAdulto + this.subtotalJoven) * 100) / 100;
+  }
+
+  menosEntradasAdulto() {
+    this.nEntradasAdulto --;
+
+    this.subtotalAdulto = Math.round((this.nEntradasAdulto * this.precioEntradasAdulto) * 100) / 100;
+
+    this.subtotal = Math.round((this.subtotalAdulto + this.subtotalJoven) * 100) / 100;
+  }
+
+  masEntradasJoven() {
+    this.nEntradasJoven ++;
+
+    this.subtotalJoven = Math.round((this.nEntradasJoven * this.precioEntradasJoven) * 100) / 100;
+
+    this.subtotal = Math.round((this.subtotalAdulto + this.subtotalJoven) * 100) / 100;
+  }
+
+  menosEntradasJoven() {
+    this.nEntradasJoven --;
+
+    this.subtotalJoven = Math.round((this.nEntradasJoven * this.precioEntradasJoven) * 100) / 100;
+
+    this.subtotal = Math.round((this.subtotalJoven + this.subtotalAdulto) * 100) / 100;
   }
 
   setNAsientos() {
-    this.selectNAsientos = this.nEntradas;
+    this.selectNAsientos = this.nEntradasAdulto;
   }
 
   traductorFechaString(fecha: Date): string {
@@ -177,6 +206,16 @@ export class CompraComponent implements OnInit {
 
   getDatosPago(fCaducidad: string) {
     this.fechaCaducidad = fCaducidad;
+  }
+
+  tarjetaValida(numTarjeta: string) {
+    const soloNumeros = /^\d+$/.test(numTarjeta);
+    console.log(numTarjeta.length);
+    if (numTarjeta.length === 16 && soloNumeros) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   asientoSeleccionado(fila: number, columna: number, event) {

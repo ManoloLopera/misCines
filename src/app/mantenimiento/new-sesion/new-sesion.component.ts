@@ -11,6 +11,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { faDoorOpen } from '@fortawesome/free-solid-svg-icons';
+import { Cine } from 'src/app/models/cine';
 @Component({
   selector: 'app-new-sesion',
   templateUrl: './new-sesion.component.html',
@@ -25,7 +26,7 @@ export class NewSesionComponent implements OnInit {
   cine;
   numSala;
   nombreCine;
-
+  cineCompleto: Cine = new Cine();
   formattedDate: string;
   constructor(
     private servicioSesion: FirestoreSesionService,
@@ -71,11 +72,35 @@ export class NewSesionComponent implements OnInit {
   dameElNombreCine(id: string) {
     let nombre;
     const subject = new Subject<string>();
-    console.log(id);
     this.servicioCine.getCine(id).subscribe(
       esteCine => {
         nombre = esteCine.payload.get('nombre');
         subject.next(nombre);
+      }
+    );
+    return subject.asObservable();
+  }
+
+  dameElCine(idSala: string) {
+    let idCine;
+    let cine: Cine;
+    const subject = new Subject<Cine>();
+    this.servicioSala.getSala(idSala).subscribe(
+      (estaSala) => {
+        idCine = estaSala.payload.get('cine');
+        this.servicioCine.getCine(idCine).subscribe(
+          (esteCine) => {
+            cine = {
+              id: idCine ,
+              nombre: esteCine.payload.get('nombre'),
+              num_sala: esteCine.payload.get('num_sala'),
+              precio: esteCine.payload.get('precio'),
+              hora_inicio: esteCine.payload.get('hora_inicio'),
+              hora_fin: esteCine.payload.get('hora_fin')
+            };
+            subject.next(cine);
+          }
+        );
       }
     );
     return subject.asObservable();
@@ -95,17 +120,27 @@ export class NewSesionComponent implements OnInit {
   }
 
   onSubmit() {
-    const sesionNueva: Sesion = {
-      sala: String(this.sesionForm.get('sala').value),
-      pelicula: String(this.sesionForm.get('pelicula').value),
-      fecha_sesion: this.formattedDate,
-      hora_inicio: String(this.sesionForm.get('hora_inicio').value),
-      hora_fin: String(this.sesionForm.get('hora_fin').value)
-    };
+    this.dameElCine(String(this.sesionForm.get('sala').value)).subscribe(
+      cine => {
+        this.cineCompleto = cine;
+        console.log(this.cineCompleto);
 
-    this.servicioSesion.addSesion(sesionNueva).then(
-      () => this.router.navigate(['sesion'])
+        const sesionNueva: Sesion = {
+          sala: String(this.sesionForm.get('sala').value),
+          pelicula: String(this.sesionForm.get('pelicula').value),
+          fecha_sesion: this.formattedDate,
+          hora_inicio: String(this.sesionForm.get('hora_inicio').value),
+          hora_fin: String(this.sesionForm.get('hora_fin').value),
+          cine: this.cineCompleto
+        };
+
+        this.servicioSesion.addSesion(sesionNueva).then(
+          () => this.router.navigate(['sesion'])
+        );
+      }
     );
+
+
   }
 
 }

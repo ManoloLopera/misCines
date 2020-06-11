@@ -11,6 +11,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatDividerModule } from '@angular/material/divider';
 
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -159,6 +160,7 @@ const routes: Routes = [
     MatDatepickerModule,
     MatMomentDateModule,
     MatPaginatorModule,
+    MatDividerModule,
     RouterModule.forChild(routes)
   ]
 })

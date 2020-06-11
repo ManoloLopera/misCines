@@ -12,6 +12,7 @@ import { Sala } from 'src/app/models/sala';
 import { Subject } from 'rxjs';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { faDoorOpen } from '@fortawesome/free-solid-svg-icons';
+import { Cine } from 'src/app/models/cine';
 @Component({
   selector: 'app-edit-sesion',
   templateUrl: './edit-sesion.component.html',
@@ -20,11 +21,12 @@ import { faDoorOpen } from '@fortawesome/free-solid-svg-icons';
 export class EditSesionComponent implements OnInit {
 
   idEditado;
-  sesionSeleccionada: Sesion = {hora_fin: '', hora_inicio: '', sala: '', fecha_sesion: '', pelicula: ''};
+  sesionSeleccionada: Sesion = {hora_fin: '', hora_inicio: '', sala: '', fecha_sesion: '', pelicula: '', cine: new Cine()};
   peliculasApp: Pelicula[];
   salasApp: Sala[];
   formattedDate: string;
   volver = faDoorOpen;
+  cineCompleto: Cine = new Cine();
   constructor(
     private route: ActivatedRoute,
     private servicioSesion: FirestoreSesionService,
@@ -51,7 +53,8 @@ export class EditSesionComponent implements OnInit {
           sala: sesion.payload.get('sala'),
           fecha_sesion: sesion.payload.get('fecha_sesion'),
           hora_inicio: sesion.payload.get('hora_inicio'),
-          hora_fin: sesion.payload.get('hora_fin')
+          hora_fin: sesion.payload.get('hora_fin'),
+          cine: sesion.payload.get('cine')
         };
 
         this.cargaFormulario(this.sesionSeleccionada);
@@ -93,6 +96,31 @@ export class EditSesionComponent implements OnInit {
     return subject.asObservable();
   }
 
+  dameElCine(idSala: string) {
+    let idCine;
+    let cine: Cine;
+    const subject = new Subject<Cine>();
+    this.servicioSala.getSala(idSala).subscribe(
+      (estaSala) => {
+        idCine = estaSala.payload.get('cine');
+        this.servicioCine.getCine(idCine).subscribe(
+          (esteCine) => {
+            cine = {
+              id: idCine ,
+              nombre: esteCine.payload.get('nombre'),
+              num_sala: esteCine.payload.get('num_sala'),
+              precio: esteCine.payload.get('precio'),
+              hora_inicio: esteCine.payload.get('hora_inicio'),
+              hora_fin: esteCine.payload.get('hora_fin')
+            };
+            subject.next(cine);
+          }
+        );
+      }
+    );
+    return subject.asObservable();
+  }
+
   cargaFormulario(sesion: Sesion) {
     this.sesionForm.get('pelicula').setValue(sesion.pelicula);
     this.sesionForm.get('sala').setValue(sesion.sala);
@@ -116,22 +144,27 @@ export class EditSesionComponent implements OnInit {
   }
 
   onSubmit() {
-    //  Hago esto porque si al editar la sesión no cambia la fecha, formattedDate es undefined, y así me aseguro que
-    //  no me de error
-    if (this.formattedDate === undefined) {
-      this.formattedDate = String(this.sesionForm.get('fecha_sesion').value);
-    }
-    const sesionNueva: Sesion = {
-      sala: String(this.sesionForm.get('sala').value),
-      pelicula: String(this.sesionForm.get('pelicula').value),
-      fecha_sesion: this.formattedDate,
-      hora_inicio: String(this.sesionForm.get('hora_inicio').value),
-      hora_fin: String(this.sesionForm.get('hora_fin').value)
-    };
+    this.dameElCine(String(this.sesionForm.get('sala').value)).subscribe(
+      cine => {
+        //  Hago esto porque si al editar la sesión no cambia la fecha, formattedDate es undefined, y así me aseguro que
+        //  no me de error
+        if (this.formattedDate === undefined) {
+          this.formattedDate = String(this.sesionForm.get('fecha_sesion').value);
+        }
+        this.cineCompleto = cine;
+        const sesionNueva: Sesion = {
+          sala: String(this.sesionForm.get('sala').value),
+          pelicula: String(this.sesionForm.get('pelicula').value),
+          fecha_sesion: this.formattedDate,
+          hora_inicio: String(this.sesionForm.get('hora_inicio').value),
+          hora_fin: String(this.sesionForm.get('hora_fin').value),
+          cine: this.cineCompleto
+        };
 
-    this.servicioSesion.updateSesion(this.idEditado, sesionNueva).then(
-      () => this.router.navigate(['sesion'])
+        this.servicioSesion.updateSesion(this.idEditado, sesionNueva).then(
+          () => this.router.navigate(['sesion'])
+        );
+      }
     );
   }
-
 }

@@ -1,23 +1,29 @@
-<mat-card class="example-card" id="container">
-  <mat-card-header>
-    <!-- <div mat-card-avatar class="example-header-image"></div> -->
-    <mat-card-title>{{peliculaDet.nombre}}</mat-card-title>
-    <mat-card-subtitle>{{peliculaDet.director}}</mat-card-subtitle>
-  </mat-card-header>
-  <img mat-card-image src="{{peliculaDet.imagen}}" alt="Photo of a Shiba Inu">
-  <mat-card-content>
-    <p>
-      <strong>Duración :</strong> {{peliculaDet.duracion}} <br>
-      <strong>Género : </strong> {{dameElNombreGenero(peliculaDet.genero)}} <br>
-      <strong>Idioma : </strong> {{dameElNombreIdioma(peliculaDet.idioma)}} <br>
-      <strong>Estreno : </strong> {{peliculaDet.estreno | date:'longDate'}} <br>
-    </p>
-    <p>
-      <strong>Sinopsis :</strong> {{peliculaDet.sinopsis}}
-    </p>
-  </mat-card-content>
-</mat-card>
+<div id="container">
+  <mat-card class="example-card">
+    <img mat-card-image src="{{peliculaDet.imagen}}" alt="Photo of a Shiba Inu">
+    <mat-card-header>
+      <!-- <div mat-card-avatar class="example-header-image"></div> -->
+      <mat-card-title>{{peliculaDet.nombre}}</mat-card-title>
+      <mat-card-subtitle>{{peliculaDet.director}}</mat-card-subtitle>
+    </mat-card-header>
 
-<button mat-raised-button color="accent" [routerLink]="['/pelicula']">
-  <fa-icon [icon]="volver"></fa-icon>
-</button>
+    <mat-divider></mat-divider>
+    <br>
+    <mat-card-content>
+      <p>
+        <strong>Duración :</strong> {{peliculaDet.duracion}} <br>
+        <strong>Género : </strong> {{dameElNombreGenero(peliculaDet.genero)}} <br>
+        <strong>Idioma : </strong> {{dameElNombreIdioma(peliculaDet.idioma)}} <br>
+        <strong>Estreno : </strong> {{peliculaDet.estreno | date:'longDate'}} <br>
+      </p>
+      <p>
+        <strong>Sinopsis :</strong> {{peliculaDet.sinopsis}}
+      </p>
+    </mat-card-content>
+  </mat-card>
+  <br><br><br>
+  <button mat-raised-button color="accent" [routerLink]="['/pelicula']">
+    <fa-icon [icon]="volver"></fa-icon>
+  </button>
+
+</div>

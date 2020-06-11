@@ -11,6 +11,7 @@ import { Pelicula } from './../../models/pelicula';
 import { FirestoreStorageService } from './../../services/firestore-storage.service';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { faDoorOpen } from '@fortawesome/free-solid-svg-icons';
+import { stringToKeyValue } from '@angular/flex-layout/extended/typings/style/style-transforms';
 @Component({
   selector: 'app-edit-pelicula',
   templateUrl: './edit-pelicula.component.html',
@@ -141,40 +142,63 @@ export class EditPeliculaComponent implements OnInit {
 
   onSubmit() {
     const archivo = this.datosFormulario.get('archivo');
-    const referencia = this.firestorage.referenceCloudStorage(this.nombreArchivo);
-    const tarea = this.firestorage.cloudStorage(this.nombreArchivo, archivo);
-    // Cambia el porcentaje
-    tarea.percentageChanges().subscribe((porcentaje) => {
-      this.porcentaje = Math.round(porcentaje);
-      if (this.porcentaje === 100) {
-        this.finalizado = true;
+    if ( this.nombreArchivo === '') {
+      if (this.formattedDate === undefined) {
+        this.formattedDate = String(this.peliculaForm.get('estreno').value);
       }
-    });
+      // Creo la película
+      const peliculaEditada: Pelicula = {
+        nombre: String(this.peliculaForm.get('nombre').value),
+        imagen: this.URLPublica,
+        sinopsis: String(this.peliculaForm.get('sinopsis').value),
+        director: String(this.peliculaForm.get('director').value),
+        duracion: String(this.peliculaForm.get('duracion').value),
+        estreno: this.formattedDate,
+        genero: this.peliculaForm.get('genero').value,
+        idioma: this.peliculaForm.get('idioma').value
+      };
 
-    referencia.getDownloadURL().subscribe(
-      (URL) => {
-        this.URLPublica = URL;
-        if (this.formattedDate === undefined) {
-          this.formattedDate = String(this.peliculaForm.get('estreno').value);
+      // Agregar pelicula
+      this.servicioPelicula.updatePelicula(this.idEditado, peliculaEditada).then(
+        () => this.router.navigate(['pelicula'])
+      );
+    } else {
+      const referencia = this.firestorage.referenceCloudStorage(this.nombreArchivo);
+      const tarea = this.firestorage.cloudStorage(this.nombreArchivo, archivo);
+      // Cambia el porcentaje
+      tarea.percentageChanges().subscribe((porcentaje) => {
+        this.porcentaje = Math.round(porcentaje);
+        if (this.porcentaje === 100) {
+          this.finalizado = true;
         }
-        // Creo la película
-        const peliculaEditada: Pelicula = {
-          nombre: String(this.peliculaForm.get('nombre').value),
-          imagen: this.URLPublica,
-          sinopsis: String(this.peliculaForm.get('sinopsis').value),
-          director: String(this.peliculaForm.get('director').value),
-          duracion: String(this.peliculaForm.get('duracion').value),
-          estreno: this.formattedDate,
-          genero: this.peliculaForm.get('genero').value,
-          idioma: this.peliculaForm.get('idioma').value
-        };
+      });
 
-        // Agregar pelicula
-        this.servicioPelicula.updatePelicula(this.idEditado, peliculaEditada).then(
-          () => this.router.navigate(['pelicula'])
-        );
-      }
-    );
+      referencia.getDownloadURL().subscribe(
+        (URL) => {
+          this.URLPublica = URL;
+          if (this.formattedDate === undefined) {
+            this.formattedDate = String(this.peliculaForm.get('estreno').value);
+          }
+          // Creo la película
+          const peliculaEditada: Pelicula = {
+            nombre: String(this.peliculaForm.get('nombre').value),
+            imagen: this.URLPublica,
+            sinopsis: String(this.peliculaForm.get('sinopsis').value),
+            director: String(this.peliculaForm.get('director').value),
+            duracion: String(this.peliculaForm.get('duracion').value),
+            estreno: this.formattedDate,
+            genero: this.peliculaForm.get('genero').value,
+            idioma: this.peliculaForm.get('idioma').value
+          };
+
+          // Agregar pelicula
+          this.servicioPelicula.updatePelicula(this.idEditado, peliculaEditada).then(
+            () => this.router.navigate(['pelicula'])
+          );
+        }
+      );
+    }
+
   }
 
 }
