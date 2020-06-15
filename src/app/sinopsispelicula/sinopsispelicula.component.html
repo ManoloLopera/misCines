@@ -26,7 +26,7 @@
     <b>Comentarios: </b>
     <br><br><br>
     <div *ngIf="comentariosPelicula.length === 0" >
-      <p> Esta película todavia no tieni aún comentarios </p>
+      <p> Esta película todavia no tiene aún comentarios </p>
       <p> ¡Sé el primero en hacer un comentario! </p>
     </div>
     <div *ngIf="comentariosPelicula.length !== 0">
@@ -57,5 +57,5 @@
   <button mat-raised-button color="accent" [routerLink]="['']">
     <fa-icon [icon]="volver"></fa-icon>
   </button>
-
+  <br><br>
 </div>

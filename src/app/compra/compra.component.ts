@@ -70,12 +70,17 @@ export class CompraComponent implements OnInit {
   selectNAsientos: number;
   columnas: string[] = [' ', 'Cantidad', 'Precio', 'Subtotal'];
   urlImagen: string;
+
   // Mapa de asientos
   numFilas: number;
   asientosXFila = 7;
+  // Cada asiento que seleccionemos se guarda aquí
   asientosSeleccionados: Asiento[] = [];
+  // Las facturas de la sesión
   facturasDeSesion: Factura[];
+  // En este array meto los asientos de las facturas de sesion
   arrays = [];
+  // Los asientos que ya han sido reservados por otros usuarios antes
   asientosOcupados: Asiento[] = [];
   iconoFactura = faFile ;
   constructor(
@@ -176,7 +181,7 @@ export class CompraComponent implements OnInit {
   }
 
   setNAsientos() {
-    this.selectNAsientos = this.nEntradasAdulto;
+    this.selectNAsientos = this.nEntradasAdulto + this.nEntradasJoven;
   }
 
   traductorFechaString(fecha: Date): string {
@@ -210,7 +215,6 @@ export class CompraComponent implements OnInit {
 
   tarjetaValida(numTarjeta: string) {
     const soloNumeros = /^\d+$/.test(numTarjeta);
-    console.log(numTarjeta.length);
     if (numTarjeta.length === 16 && soloNumeros) {
       return false;
     } else {
@@ -257,16 +261,15 @@ export class CompraComponent implements OnInit {
       columnaAsiento: butaca
     };
 
-    // tslint:disable-next-line: prefer-for-of
+
     for (let i = 0; i < this.asientosOcupados.length; i++) {
-      // tslint:disable-next-line: max-line-length
-      if (this.asientosOcupados[i].filaAsiento === asiento.filaAsiento && this.asientosOcupados[i].columnaAsiento === asiento.columnaAsiento) {
+
+      if (this.asientosOcupados[i].filaAsiento === asiento.filaAsiento &&
+         this.asientosOcupados[i].columnaAsiento === asiento.columnaAsiento) {
         ocupado = true;
         break;
       }
     }
-
-
     return ocupado;
   }
 }

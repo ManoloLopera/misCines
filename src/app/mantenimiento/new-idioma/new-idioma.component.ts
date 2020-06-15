@@ -28,7 +28,10 @@ export class NewIdiomaComponent implements OnInit {
   porcentaje = 0;
   finalizado = false;
 
-  constructor(private firestorage: FirestoreStorageService, private servicio: FirestoreIdiomaService, private router: Router) { }
+  constructor(
+    private firestorage: FirestoreStorageService,
+    private servicio: FirestoreIdiomaService,
+    private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -42,15 +45,18 @@ export class NewIdiomaComponent implements OnInit {
         this.datosFormulario.append('archivo', event.target.files[i], event.target.files[i].name);
       }
     } else {
-      this.mensajeArchivo = 'No hay un archivo seleccionado';
+      this.mensajeArchivo = 'No hay ningún archivo seleccionado';
     }
   }
 
   // Sube el archivo a Cloud Storage
   public subirArchivo() {
     if (this.idiomaForm.valid) {
+      // Recogemos la imagen
       let archivo = this.datosFormulario.get('archivo');
+      // La referencia en Local Storage con el nombre del archivo
       let referencia = this.firestorage.referenceCloudStorage(this.nombreArchivo);
+      // Preparacion para subir el archivo
       let tarea = this.firestorage.cloudStorage(this.nombreArchivo, archivo);
       // Cambia el porcentaje
       tarea.percentageChanges().subscribe((porcentaje) => {

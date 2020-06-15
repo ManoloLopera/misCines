@@ -120,6 +120,7 @@ export class HomeComponent implements OnInit {
 
   filtroCine(cineSeleccionado) {
     if (cineSeleccionado === 'todos') {
+      this.mapaCineSesiones.clear();
       this.cineApp.forEach(
         (cine) => {
           if (this.sesionesPorCine(cine.id, this.sesionApp, this.peliculasApp) !== undefined) {
